@@ -1,0 +1,24 @@
+<config>
+    <modules>
+        <Magium_Ui>
+            <!-- <version>0.0.1</version> -->
+        </Magium_Ui>
+    </modules>
+    <global>
+        <models>
+            <magium_ui>
+                <class>Magium_Ui_Model</class>
+            </magium_ui>
+        </models>
+        <helpers>
+            <magium_ui>
+                <class>Magium_Ui_Helper</class>
+            </magium_ui>
+        </helpers>
+        <blocks>
+            <magium_ui>
+                <class>Magium_Ui_Block</class>
+            </magium_ui>
+        </blocks>
+    </global>
+</config>
