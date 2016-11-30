@@ -1,6 +1,6 @@
 <?php
 
-class Magium_Ui_Block_Adminhtml_Management_Form_Test extends Mage_Adminhtml_Block_Widget_Form
+class Magium_Ui_Block_Adminhtml_Management_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     protected function _prepareForm()
     {
@@ -31,7 +31,13 @@ class Magium_Ui_Block_Adminhtml_Management_Form_Test extends Mage_Adminhtml_Bloc
             'name' => 'theme_search',
         ));
 
-
+        $fieldset->addField('add_instruction', 'button', array(
+            'name'  => 'add_instruction',
+            'value' => $this->__('Add Instruction'),
+            'type' => 'button',
+            'class' => 'save',
+            'onclick' => 'test()'
+        ));
 
         $this->setForm($form);
 

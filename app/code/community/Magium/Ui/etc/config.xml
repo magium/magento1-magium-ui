@@ -21,4 +21,232 @@
             </magium_ui>
         </blocks>
     </global>
+    <magium>
+        <configuration>
+            <sections>
+                <store_defaults>
+                    <label>Store Defaults</label>
+                    <type>Magium\Magento\Themes\AbstractThemeConfiguration</type>
+                    <groups>
+                        <group>
+                            <name>General Site Configuration</name>
+                            <elements>
+                                <baseUrl>
+                                    <label>Base Site URL</label>
+                                </baseUrl>
+                                <homeXpath>
+                                    <label>Home Link XPath</label>
+                                </homeXpath>
+                            </elements>
+                        </group>
+                        <group>
+                            <name>Defaults</name>
+                            <elements>
+                                <defaultSimpleProductName>
+                                    <label>Default Simple Product Name</label>
+                                </defaultSimpleProductName>
+                                <navigationPathToSimpleProductCategory>
+                                    <label>Category For Default Simple Product</label>
+                                </navigationPathToSimpleProductCategory>
+                                <defaultConfigurableProductName>
+                                    <label>Default Configurable Product Name</label>
+                                </defaultConfigurableProductName>
+                                <defaultConfigurableProductName>
+                                    <label>Default Configurable Product Name</label>
+                                </defaultConfigurableProductName>
+                            </elements>
+                        </group>
+                        <group>
+                            <name>Xpaths</name>
+                            <elements>
+                                <addToCartXpath>
+                                    <label>Product Page Add To Cart Xpath</label>
+                                </addToCartXpath>
+                                <categoryAddToCartButtonXPathSelector>
+                                    <label>Category Page Add To Cart Xpath</label>
+                                </categoryAddToCartButtonXPathSelector>
+                                <addToCartSuccessXpath>
+                                    <label>Successful Add-To-Cart Xpath</label>
+                                </addToCartSuccessXpath>
+                            </elements>
+                        </group>
+                    </groups>
+                </store_defaults>
+                <admin_identity>
+                    <label>Admin Identity</label>
+                    <type>Magium\Magento\Identities\Admin</type>
+                    <groups>
+                        <group>
+                            <name>Admin Identity</name>
+                            <elements>
+                                <account>
+                                    <label>Username</label>
+                                </account>
+                                <password>
+                                    <label>Password</label>
+                                </password>
+                            </elements>
+                        </group>
+                    </groups>
+                </admin_identity>
+                <admin_configuration>
+                    <label>Admin Configuration</label>
+                    <type>Magium\Magento\Themes\Admin\ThemeConfiguration</type>
+                    <groups>
+                        <group>
+                            <name>Admin Configuration</name>
+                            <elements>
+                                <baseUrl>
+                                    <label>URL For Admin UI</label>
+                                </baseUrl>
+                            </elements>
+                        </group>
+                    </groups>
+                </admin_configuration>
+                <customer_identity>
+                    <label>Customer Identity</label>
+                    <type>Magium\Magento\Identities\Customer</type>
+                    <groups>
+                        <group>
+                            <name>Authentication</name>
+                            <elements>
+                                <emailAddress>
+                                    <label>Email Address</label>
+                                </emailAddress>
+                                <password>
+                                    <label>Password</label>
+                                </password>
+                            </elements>
+                        </group>
+                        <group>
+                            <name>Billing Address</name>
+                            <elements>
+                                <billingFirstName>
+                                    <label>First Name</label>
+                                </billingFirstName>
+                                <billingLastName>
+                                    <label>Last Name</label>
+                                </billingLastName>
+                                <billingCompany>
+                                    <label>Company</label>
+                                </billingCompany>
+                                <billingAddress>
+                                    <label>Address</label>
+                                </billingAddress>
+                                <billingAddress2>
+                                    <label>Address2</label>
+                                </billingAddress2>
+                                <billingCity>
+                                    <label>City</label>
+                                </billingCity>
+                                <billingRegionId>
+                                    <label>Region ID</label>
+                                </billingRegionId>
+                                <billingPostCode>
+                                    <label>Post Code</label>
+                                </billingPostCode>
+                                <billingCountryId>
+                                    <label>Country ID</label>
+                                </billingCountryId>
+                                <billingTelephone>
+                                    <label>Telephone</label>
+                                </billingTelephone>
+                                <billingFax>
+                                    <label>Fax</label>
+                                </billingFax>
+                            </elements>
+                        </group>
+                        <group>
+                            <name>Shipping Address</name>
+                            <elements>
+                                <shippingFirstName>
+                                    <label>First Name</label>
+                                </shippingFirstName>
+                                <shippingLastName>
+                                    <label>Last Name</label>
+                                </shippingLastName>
+                                <shippingCompany>
+                                    <label>Company</label>
+                                </shippingCompany>
+                                <shippingAddress>
+                                    <label>Address</label>
+                                </shippingAddress>
+                                <shippingAddress2>
+                                    <label>Address 2</label>
+                                </shippingAddress2>
+                                <shippingCity>
+                                    <label>City</label>
+                                </shippingCity>
+                                <shippingRegionId>
+                                    <label>Region ID</label>
+                                </shippingRegionId>
+                                <shippingPostCode>
+                                    <label>Post Code</label>
+                                </shippingPostCode>
+                                <shippingCountryId>
+                                    <label>Country ID</label>
+                                </shippingCountryId>
+                                <shippingTelephone>
+                                    <label>Telephone</label>
+                                </shippingTelephone>
+                                <shippingFax>
+                                    <label>Fax</label>
+                                </shippingFax>
+                            </elements>
+                        </group>
+                    </groups>
+                </customer_identity>
+            </sections>
+        </configuration>
+        <execution>
+            <catalog_product_save_after_commit>
+                <label>Product Save</label>
+            </catalog_product_save_after_commit>
+            <catalog_product_delete_after_commit>
+                <label>Product Delete</label>
+            </catalog_product_delete_after_commit>
+            <catalog_category_save_after_commit>
+                <label>Category Save</label>
+            </catalog_category_save_after_commit>
+            <catalog_category_delete_after_commit>
+                <label>Category Delete</label>
+            </catalog_category_delete_after_commit>
+            <admin_system_config_section_save_after>
+                <label>Configuration Save</label>
+            </admin_system_config_section_save_after>
+            <cms_save_after_commit>
+                <label>CMS Page Save</label>
+            </cms_save_after_commit>
+            <cms_delete_after_commit>
+                <label>CMS Page Delete</label>
+            </cms_delete_after_commit>
+        </execution>
+    </magium>
+    <adminhtml>
+        <layout>
+            <updates>
+                <magium_ui>
+                    <file>magium/ui.xml</file>
+                </magium_ui>
+            </updates>
+        </layout>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <magium_ui before="Mage_Adminhtml">Magium_Ui</magium_ui>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <default>
+        <magium>
+            <general>
+                <selenium_url>http://localhost:4444/wd/hub/</selenium_url>
+            </general>
+        </magium>
+    </default>
 </config>

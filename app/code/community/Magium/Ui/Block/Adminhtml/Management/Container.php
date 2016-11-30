@@ -1,6 +1,6 @@
 <?php
 
-class Magium_Ui_Block_Adminhtml_Management_TestContainer
+class Magium_Ui_Block_Adminhtml_Management_Container
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 

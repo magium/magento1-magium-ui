@@ -1,0 +1,42 @@
+<layout>
+    <adminhtml_magiumui_configuration>
+        <reference name="left">
+            <block type="adminhtml/store_switcher" name="store_switcher" before="-"/>
+            <block type="magium_ui/adminhtml_configuration_tabs" name="configuration_tabs" />
+        </reference>
+    </adminhtml_magiumui_configuration>
+    <adminhtml_magiumui_configuration_index>
+        <update handle="adminhtml_magiumui_configuration" />
+        <reference name="content">
+            <block name="magium_ui_configuration_container" type="magium_ui/adminhtml_configuration_container" />
+        </reference>
+    </adminhtml_magiumui_configuration_index>
+    <adminhtml_magiumui_configuration_section>
+        <update handle="adminhtml_magiumui_configuration" />
+        <reference name="content">
+            <block name="magium_ui_configuration_container" type="magium_ui/adminhtml_configuration_container">
+                <block name="magium_ui_configuration_section" type="magium_ui/adminhtml_configuration_section" />
+            </block>
+        </reference>
+    </adminhtml_magiumui_configuration_section>
+
+    <adminhtml_magiumui_management_index>
+        <reference name="left">
+            <block type="adminhtml/store_switcher" name="store_switcher" before="-"/>
+            <block type="magium_ui/adminhtml_management_tabs" name="management_tabs" />
+        </reference>
+        <reference name="content">
+            <block name="magium_ui_management_container" type="magium_ui/adminhtml_management_container" />
+        </reference>
+    </adminhtml_magiumui_management_index>
+    <adminhtml_magiumui_execution_index>
+        <reference name="left">
+            <block type="adminhtml/store_switcher" name="store_switcher" before="-"/>
+            <block type="magium_ui/adminhtml_execution_tabs" name="execution_tabs" />
+        </reference>
+        <reference name="content">
+            <block name="magium_ui_execution_container" type="magium_ui/adminhtml_execution_container" />
+        </reference>
+    </adminhtml_magiumui_execution_index>
+
+</layout>

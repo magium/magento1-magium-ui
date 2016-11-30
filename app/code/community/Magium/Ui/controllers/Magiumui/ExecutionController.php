@@ -1,7 +1,7 @@
 <?php
 
 
-class Magium_Ui_Magiumui_ManagementController extends Mage_Adminhtml_Controller_Action
+class Magium_Ui_Magiumui_ExecutionController extends Mage_Adminhtml_Controller_Action
 {
 
     public function indexAction()

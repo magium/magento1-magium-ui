@@ -1,0 +1,46 @@
+<config>
+    <tabs>
+        <magium translate="label" module="magium_ui">
+            <label>Magium</label>
+        </magium>
+    </tabs>
+    <sections>
+        <magium translate="label" module="magium_ui">
+            <label>Magium</label>
+            <tab>magium</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <testing_url translate="label">
+                            <label>Testing URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </testing_url>
+                        <selenium_url translate="label">
+                            <label>Selenium URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </selenium_url>
+                    </fields>
+                </general>
+            </groups>
+        </magium>
+    </sections>
+</config>
