@@ -12,9 +12,9 @@ class Magium_Ui_Block_Adminhtml_Management_Tabs extends Mage_Adminhtml_Block_Wid
 
     protected function _beforeToHtml()
     {
-        $this->addTab('item1', array(
-            'label' => $this->__('Can Add Product To Cart'),
-            'title' => $this->__('Can Add Product To Cart')
+        $this->addTab('new_test', array(
+            'label' => $this->__('Create New Test'),
+            'title' => $this->__('Create New Test')
         ));
 
         $this->addTab('default_elements', array(

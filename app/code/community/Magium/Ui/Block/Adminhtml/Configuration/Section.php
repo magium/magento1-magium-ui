@@ -1,6 +1,6 @@
 <?php
 
-class Magium_Ui_Block_Adminhtml_Configuration_Container
+class Magium_Ui_Block_Adminhtml_Configuration_Section
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 
@@ -10,9 +10,10 @@ class Magium_Ui_Block_Adminhtml_Configuration_Container
 
         $this->_objectId = 'id';
         $this->_blockGroup = 'magium_ui';
-        $this->_controller = 'adminhtml_configuration';
+        $this->_controller = 'adminhtml_configuration_section';
         $this->_mode = 'edit';
     }
+
 
     /**
      * Return the title string to show above the form
@@ -21,11 +22,15 @@ class Magium_Ui_Block_Adminhtml_Configuration_Container
      */
     public function getHeaderText()
     {
-        $store = 'All Store Views';
+        $section = Mage::app()->getRequest()->getParam('section');
+        $config = Mage::app()->getConfig()->getNode('magium/configuration/sections/' . $section);
+
         $storeId = Mage::app()->getRequest()->getParam('store');
+        $storeName = 'All Stores';
         if ($storeId) {
-            $store = Mage::app()->getStore()->getName();
+            $storeName = Mage::app()->getStore($storeId)->getName();
         }
-        return $this->__('Manage Configuration for %s', $store);
+
+        return $this->__('%s in %s', (string)$config->label, $storeName);
     }
 }

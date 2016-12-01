@@ -15,7 +15,7 @@ class Magium_Ui_Block_Adminhtml_Configuration_Tabs extends Mage_Adminhtml_Block_
         $this->addTab('base_options', array(
             'label' => $this->__('Base Options'),
             'title' => $this->__('Base Options'),
-            'url'   => Mage::helper('adminhtml')->getUrl('adminhtml/magiumui_configuration/load', array('section' => 'base'))
+            'url'   => Mage::helper('adminhtml')->getUrl('adminhtml/magiumui_configuration/index')
         ));
 
         $config = Mage::getConfig()->getNode('magium/configuration/sections');
@@ -28,6 +28,8 @@ class Magium_Ui_Block_Adminhtml_Configuration_Tabs extends Mage_Adminhtml_Block_
                 'url'   => Mage::helper('adminhtml')->getUrl('adminhtml/magiumui_configuration/section', array('section' => $section))
             ));
         }
+
+        $this->setActiveTab(Mage::app()->getRequest()->getParam('section', 'base_options'));
 
 
         return parent::_beforeToHtml();

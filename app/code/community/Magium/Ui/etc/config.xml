@@ -1,14 +1,34 @@
 <config>
     <modules>
         <Magium_Ui>
-            <!-- <version>0.0.1</version> -->
+            <version>1.0.0</version>
         </Magium_Ui>
     </modules>
     <global>
+        <resources>
+            <magium_ui_setup>
+                <setup>
+                    <module>Magium_Ui</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </magium_ui_setup>
+        </resources>
         <models>
             <magium_ui>
                 <class>Magium_Ui_Model</class>
+                <resourceModel>magium_ui_resource</resourceModel>
             </magium_ui>
+            <magium_ui_resource>
+                <class>Magium_Ui_Model_Resource</class>
+                <entities>
+                    <configuration>
+                        <table>magium_ui_configuration</table>
+                    </configuration>
+                    <introspected>
+                        <table>magium_ui_introspected</table>
+                    </introspected>
+                </entities>
+            </magium_ui_resource>
         </models>
         <helpers>
             <magium_ui>
@@ -26,9 +46,9 @@
             <sections>
                 <store_defaults>
                     <label>Store Defaults</label>
-                    <type>Magium\Magento\Themes\AbstractThemeConfiguration</type>
+                    <type>Magium\Themes\BaseThemeInterface</type>
                     <groups>
-                        <group>
+                        <general_configuration>
                             <name>General Site Configuration</name>
                             <elements>
                                 <baseUrl>
@@ -38,8 +58,8 @@
                                     <label>Home Link XPath</label>
                                 </homeXpath>
                             </elements>
-                        </group>
-                        <group>
+                        </general_configuration>
+                        <defaults>
                             <name>Defaults</name>
                             <elements>
                                 <defaultSimpleProductName>
@@ -55,8 +75,8 @@
                                     <label>Default Configurable Product Name</label>
                                 </defaultConfigurableProductName>
                             </elements>
-                        </group>
-                        <group>
+                        </defaults>
+                        <xpaths>
                             <name>Xpaths</name>
                             <elements>
                                 <addToCartXpath>
@@ -69,14 +89,14 @@
                                     <label>Successful Add-To-Cart Xpath</label>
                                 </addToCartSuccessXpath>
                             </elements>
-                        </group>
+                        </xpaths>
                     </groups>
                 </store_defaults>
                 <admin_identity>
                     <label>Admin Identity</label>
                     <type>Magium\Magento\Identities\Admin</type>
                     <groups>
-                        <group>
+                        <admin_identity>
                             <name>Admin Identity</name>
                             <elements>
                                 <account>
@@ -86,28 +106,28 @@
                                     <label>Password</label>
                                 </password>
                             </elements>
-                        </group>
+                        </admin_identity>
                     </groups>
                 </admin_identity>
                 <admin_configuration>
                     <label>Admin Configuration</label>
                     <type>Magium\Magento\Themes\Admin\ThemeConfiguration</type>
                     <groups>
-                        <group>
+                        <admin_configuration>
                             <name>Admin Configuration</name>
                             <elements>
                                 <baseUrl>
                                     <label>URL For Admin UI</label>
                                 </baseUrl>
                             </elements>
-                        </group>
+                        </admin_configuration>
                     </groups>
                 </admin_configuration>
                 <customer_identity>
                     <label>Customer Identity</label>
                     <type>Magium\Magento\Identities\Customer</type>
                     <groups>
-                        <group>
+                        <authentiation>
                             <name>Authentication</name>
                             <elements>
                                 <emailAddress>
@@ -117,8 +137,8 @@
                                     <label>Password</label>
                                 </password>
                             </elements>
-                        </group>
-                        <group>
+                        </authentiation>
+                        <billing_address>
                             <name>Billing Address</name>
                             <elements>
                                 <billingFirstName>
@@ -155,8 +175,8 @@
                                     <label>Fax</label>
                                 </billingFax>
                             </elements>
-                        </group>
-                        <group>
+                        </billing_address>
+                        <shipping_address>
                             <name>Shipping Address</name>
                             <elements>
                                 <shippingFirstName>
@@ -193,7 +213,7 @@
                                     <label>Fax</label>
                                 </shippingFax>
                             </elements>
-                        </group>
+                        </shipping_address>
                     </groups>
                 </customer_identity>
             </sections>

@@ -14,9 +14,7 @@
     <adminhtml_magiumui_configuration_section>
         <update handle="adminhtml_magiumui_configuration" />
         <reference name="content">
-            <block name="magium_ui_configuration_container" type="magium_ui/adminhtml_configuration_container">
-                <block name="magium_ui_configuration_section" type="magium_ui/adminhtml_configuration_section" />
-            </block>
+            <block name="magium_ui_configuration_section" type="magium_ui/adminhtml_configuration_section" />
         </reference>
     </adminhtml_magiumui_configuration_section>
 

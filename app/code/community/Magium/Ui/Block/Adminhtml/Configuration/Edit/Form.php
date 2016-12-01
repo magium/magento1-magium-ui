@@ -7,19 +7,24 @@ class Magium_Ui_Block_Adminhtml_Configuration_Edit_Form extends Mage_Adminhtml_B
         $form = new Varien_Data_Form();
         $form->setHtmlIdPrefix('general');
 
-        $fieldset = $form->addFieldset('general_form', array(
-            'legend' => $this->__('Theme Configurations')
+        $fieldset = $form->addFieldset('additional_classes', array(
+            'legend' => $this->__('Additional (Your) Classes')
         ));
 
         $button = '<button type="button">Scan...</button>';
 
         $fieldset->addField('theme_search', 'textarea', array(
-            'label' => $this->__('Theme Search Locations'),
+            'label' => $this->__('Class Search Locations'),
             'required' => false,
             'rows'  => 3,
             'style' => 'height: auto;',
-            'after_element_html' => '<small>One fully qualified directory per line.  Will search for any class extending Magium\Magento\Themes\AbstractThemeConfiguration</small>' . $button,
+            'after_element_html' => '<small>One fully qualified directory per line</small><Br>' . $button,
             'name' => 'theme_search',
+        ));
+
+
+        $fieldset = $form->addFieldset('general_form', array(
+            'legend' => $this->__('Theme Selection')
         ));
 
         $themes = Mage::getModel('magium_ui/source_themes');
