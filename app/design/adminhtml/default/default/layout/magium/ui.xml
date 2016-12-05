@@ -8,9 +8,15 @@
     <adminhtml_magiumui_configuration_index>
         <update handle="adminhtml_magiumui_configuration" />
         <reference name="content">
-            <block name="magium_ui_configuration_container" type="magium_ui/adminhtml_configuration_container" />
+            <block name="magium_ui_configuration_index" type="magium_ui/adminhtml_configuration_index" />
         </reference>
     </adminhtml_magiumui_configuration_index>
+    <adminhtml_magiumui_configuration_base>
+        <update handle="adminhtml_magiumui_configuration" />
+        <reference name="content">
+            <block name="magium_ui_configuration_base" type="magium_ui/adminhtml_configuration_base" />
+        </reference>
+    </adminhtml_magiumui_configuration_base>
     <adminhtml_magiumui_configuration_section>
         <update handle="adminhtml_magiumui_configuration" />
         <reference name="content">

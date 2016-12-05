@@ -11,6 +11,6 @@
   ],
   "require": {
     "magento-hackathon/magento-composer-installer": "3.0.*",
-    "magium/magento": "^0.8.1"
+    "magium/magento": "^0.9.0"
   }
 }

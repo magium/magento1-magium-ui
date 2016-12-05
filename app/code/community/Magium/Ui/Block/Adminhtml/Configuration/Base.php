@@ -1,6 +1,6 @@
 <?php
 
-class Magium_Ui_Block_Adminhtml_Configuration_Container
+class Magium_Ui_Block_Adminhtml_Configuration_Base
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 
@@ -10,7 +10,7 @@ class Magium_Ui_Block_Adminhtml_Configuration_Container
 
         $this->_objectId = 'id';
         $this->_blockGroup = 'magium_ui';
-        $this->_controller = 'adminhtml_configuration';
+        $this->_controller = 'adminhtml_configuration_base';
         $this->_mode = 'edit';
     }
 
@@ -22,7 +22,7 @@ class Magium_Ui_Block_Adminhtml_Configuration_Container
     public function getHeaderText()
     {
         $store = 'All Store Views';
-        $storeId = Mage::app()->getRequest()->getParam('store');
+        $storeId = $this->getRequest()->getParam('store');
         if ($storeId) {
             $store = Mage::app()->getStore()->getName();
         }

@@ -7,6 +7,4 @@ class Magium_Ui_Model_Resource_Introspected_Collection extends Mage_Core_Model_R
     {
         $this->_init('magium_ui/introspected');
     }
-
-
 }

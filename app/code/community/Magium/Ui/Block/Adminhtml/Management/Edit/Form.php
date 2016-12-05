@@ -15,14 +15,14 @@ class Magium_Ui_Block_Adminhtml_Management_Edit_Form extends Mage_Adminhtml_Bloc
 test is intended only for simple products you can add a precondition, one per line, such as this:</small>
 
 <pre style="margin-bottom: 20px;">
-{{product->getTypeId()}} == simple
-{{product->isSaleable()}} != false
-{{product->getQty()}} > 1
+{{\$product->getTypeId()}} == simple
+{{\$product->isSaleable()}}
+{{\$product->getQty()}} > 1
 </pre>
 <small>The value inside {{}} will be based on the available context.  Events, for example, may have the product, category,
 or some other data available.  That data is injected into the Magium test prior to text execution and can be referenced 
 here.  If <strong>any</strong> of the conditions specified evaluate to <span style="font-family: courier">false</span> 
-the test will be skipped.</small>
+the test will be skipped.  Quotes are not required for strings.  </small>
 HTML;
 
         $fieldset->addField('pre_conditions', 'textarea', array(

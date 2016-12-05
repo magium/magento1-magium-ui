@@ -1,15 +1,14 @@
 <?php
 
-class Magium_Ui_Model_Resource_Configuration_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
+class Magium_Ui_Model_Resource_Option_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
 
     protected $_storeId = 0;
     protected $_names = [];
-    protected $_class;
 
-    protected function _construct()
+    public function _construct()
     {
-        $this->_init('magium_ui/configuration');
+        $this->_init('magium_ui/option');
     }
 
     public function setStoreId($storeId)
@@ -18,11 +17,6 @@ class Magium_Ui_Model_Resource_Configuration_Collection extends Mage_Core_Model_
             $storeId = $storeId->getEntityId();
         }
         $this->_storeId = $storeId;
-    }
-
-    public function setForClass($class)
-    {
-        $this->_class = $class;
     }
 
     public function setNames(array $names)
@@ -34,9 +28,6 @@ class Magium_Ui_Model_Resource_Configuration_Collection extends Mage_Core_Model_
     {
         if ($this->_names) {
             $this->addFieldToFilter('main_table.name', ['in' => $this->_names]);
-        }
-        if ($this->_class) {
-            $this->addFieldToFilter('class', $this->_class);
         }
         if ($this->_storeId > 0) {
             /*

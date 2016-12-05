@@ -10,12 +10,7 @@ class Magium_Ui_Block_Adminhtml_Configuration_Section_Edit_Form extends Mage_Adm
 
     protected function _construct()
     {
-        $this->testCase = Mage::getModel('magium_ui/nullTestCase');
-        $initializer = Mage::getModel(
-            'magium_ui/nullInitializer',
-            Magium\TestCaseConfiguration::class
-        );
-        $initializer->initialize($this->testCase);
+        $this->testCase = Mage::helper('magium_ui')->getNullTestCase();
         $this->testCase->switchThemeConfiguration(Magium\Magento\Themes\Magento19\ThemeConfiguration::class);
         parent::_construct();
     }
@@ -33,7 +28,13 @@ class Magium_Ui_Block_Adminhtml_Configuration_Section_Edit_Form extends Mage_Adm
 
         $configuration = Mage::getConfig()->getNode('magium/configuration/sections/' . $section);
         $sourceType = (string)$configuration->type;
-        $source = $this->testCase->get($sourceType);
+
+        if ($sourceType == \Magium\Themes\ThemeInterface::class) {
+            $source = $this->getCurrentTheme($storeId);
+            $source = $this->testCase->get($source);
+        } else {
+            $source = $this->testCase->get($sourceType);
+        }
 
         $elements = [];
 
@@ -69,20 +70,24 @@ class Magium_Ui_Block_Adminhtml_Configuration_Section_Edit_Form extends Mage_Adm
         return parent::_prepareForm();
     }
 
+    protected function getCurrentTheme($storeId)
+    {
+        $collection = Mage::getModel('magium_ui/option')->getCollection();
+        /* @var $collection Magium_Ui_Model_Resource_Option_Collection */
+        $collection->setStoreId($storeId);
+        $collection->setNames(['theme_configuration']);
+        $collection->setPageSize(1);
+        $theme = $collection->getFirstItem();
+        if ($theme->getId()) {
+            return $theme->getValue();
+        }
+        return Magium\Magento\Themes\Magento19\ThemeConfiguration::class; // default
+    }
+
     protected function getElementValue(\Magium\AbstractConfigurableElement $source, $name)
     {
         $value = $source->$name;
         return $value;
     }
 
-    /**
-     *
-     * @return array
-     */
-    protected function _getFormData()
-    {
-        $data = [];
-
-        return (array)$data;
-    }
 }
