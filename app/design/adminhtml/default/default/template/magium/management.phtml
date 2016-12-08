@@ -1,0 +1,78 @@
+<?php
+
+/* @var $this Magium_Ui_Block_Adminhtml_Management_Builder */
+
+?>
+<style>
+    #magium-builder-form-container-clickblocker {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.2);
+        z-index: 10000;
+    }
+
+    #magium-builder-form-container {
+        position: fixed;
+        top: 25%;
+        left: 25%;
+        margin-top: -50px;
+        margin-left: -50px;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #656565;
+        box-shadow: #656565 1px 1px 5px;
+        border-radius: 3px;
+    }
+
+
+</style>
+<div id="magium-builder-form-container-clickblocker" style="display: none; ">
+    <div id="magium-builder-form-container">
+        <h3 class="icon-head">Magium Instruction</h3>
+        <?php echo $this->getForm()->toHtml(); ?>
+        <button type="button" id="create-instruction">Create Instruction</button>
+        <button type="button" id="cancel-instruction" class="back">Cancel</button>
+    </div>
+</div>
+<button id="add-instruction-button" type="button">Add Instruction...</button>
+<script type="text/javascript">
+
+    Event.observe('add-instruction-button', 'click', function () {
+        $('magium-builder-form-container-clickblocker').show();
+        showSelectedItem();
+    });
+
+    function showSelectedItem() {
+        var containerId;
+        for (var i in containerIds) {
+            containerId = containerIds[i];
+            var item = $(containerId);
+            if (item && item.hide) {
+                console.log('Hiding ' + containerId);
+                item.hide();
+            }
+        }
+        containerId = $('type').getValue() + '_container';
+        var container = $(containerId);
+        if (container && container.show) {
+            console.log('Showing ' + containerId);
+            $(containerId).show();
+        }
+    }
+
+
+    var containerIds = <?php echo Zend_Json::encode($this->getHiddenContainerIds()); ?>;
+
+    var builderRequirements = <?php echo Zend_Json::encode($this->typeParamRequirements()) ?>;
+
+    document.observe('keydown', function(e) {
+        if (Event.KEY_ESC != e.keyCode) return;
+        $('magium-builder-form-container-clickblocker').hide();
+    });
+
+</script>

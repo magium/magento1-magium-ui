@@ -45,6 +45,20 @@
         </blocks>
     </global>
     <magium>
+        <base_types>
+            <navigator>
+                <label>Navigator</label>
+                <type>Magium\Navigators\NavigatorInterface</type>
+            </navigator>
+            <assertion>
+                <label>Assertion</label>
+                <type>Magium\Assertions\AssertInterface</type>
+            </assertion>
+            <action>
+                <label>Action</label>
+                <type>Magium\Actions\ActionInterface</type>
+            </action>
+        </base_types>
         <configuration>
             <sections>
                 <store_defaults>
