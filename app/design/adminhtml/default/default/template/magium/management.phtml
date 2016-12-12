@@ -10,7 +10,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        background-color: rgba(0,0,0,0.2);
+        background-color: rgba(0, 0, 0, 0.2);
         z-index: 10000;
     }
 
@@ -21,7 +21,7 @@
         margin-top: -50px;
         margin-left: -50px;
         width: 50%;
-        height: 50%;
+        height: 250px;
         background-color: white;
         padding: 20px;
         border: 1px solid #656565;
@@ -29,6 +29,13 @@
         border-radius: 3px;
     }
 
+    #form_instructions td.value {
+        width: 100%;
+    }
+
+    .instruction-delete-button {
+        margin-right: 10px;
+    }
 
 </style>
 <div id="magium-builder-form-container-clickblocker" style="display: none; ">
@@ -36,16 +43,25 @@
         <h3 class="icon-head">Magium Instruction</h3>
         <?php echo $this->getForm()->toHtml(); ?>
         <button type="button" id="create-instruction">Create Instruction</button>
+        <button type="button" id="save-instruction" style="display: none;">Save Instruction</button>
         <button type="button" id="cancel-instruction" class="back">Cancel</button>
     </div>
 </div>
 <button id="add-instruction-button" type="button">Add Instruction...</button>
 <script type="text/javascript">
 
-    Event.observe('add-instruction-button', 'click', function () {
+    function addForm()
+    {
+        $('create-instruction').show();
+        $('save-instruction').hide();
+        showForm();
+    }
+
+    function showForm()
+    {
         $('magium-builder-form-container-clickblocker').show();
         showSelectedItem();
-    });
+    }
 
     function showSelectedItem() {
         var containerId;
@@ -53,26 +69,172 @@
             containerId = containerIds[i];
             var item = $(containerId);
             if (item && item.hide) {
-                console.log('Hiding ' + containerId);
                 item.hide();
             }
         }
         containerId = $('type').getValue() + '_container';
         var container = $(containerId);
         if (container && container.show) {
-            console.log('Showing ' + containerId);
             $(containerId).show();
         }
+        ensureParameterProperlySet();
     }
+
+    function ensureParameterProperlySet() {
+        var componentSelector = $('type').getValue();
+        var selectedItem = $(componentSelector + '_instruction').getValue();
+
+        if (!builderRequirements[selectedItem]) {
+            $(componentSelector).select('tr:nth-child(2)').hide();
+        } else {
+            var show = builderRequirements[selectedItem];
+            switch (show) {
+                case 'none':
+                    $(componentSelector).select('tr:nth-child(2)')[0].hide();
+                    break;
+                case 'required':
+                    $(componentSelector).select('tr:nth-child(2)')[0].show();
+                    $(componentSelector).select('tr:nth-child(2) span.required')[0].show();
+                    break;
+                case 'optional':
+                    $(componentSelector).select('tr:nth-child(2)')[0].show();
+                    $(componentSelector).select('tr:nth-child(2) span.required')[0].hide();
+                    break;
+                default:
+                    $(componentSelector).select('tr:nth-child(2)')[0].hide();
+                    break;
+            }
+        }
+    }
+
+    function closeForm(e)
+    {
+        if (e && e.keyCode && Event.KEY_ESC != e.keyCode) return;
+        $('magium-builder-form-container-clickblocker').hide();
+    }
+
+    function removeRow(e)
+    {
+        if (confirm('Are you sure you want to delete this instruction?')) {
+            $(this.readAttribute('data-delete')).remove();
+        }
+    }
+
+    function saveForm()
+    {
+        setInstruction(null, null, null, this.readAttribute('data-row'));
+    }
+
+    function editInstruction()
+    {
+        $('save-instruction').setAttribute('data-row', this.readAttribute('data-row'));
+        $('create-instruction').hide();
+        $('save-instruction').show();
+        var componentSelector = this.readAttribute('data-type');
+        $('type').value = componentSelector;
+        var instruction  = this.readAttribute('data-instruction');
+        $(componentSelector + '_instruction').value = instruction;
+        var param = this.readAttribute('data-param');
+
+        showForm();
+    }
+
+    function setInstruction(componentSelector, selectedItem, param, rowId)
+    {
+        var insertRow = true;
+
+        if (!componentSelector || !componentSelector.substring) {
+            componentSelector = $('type').getValue();
+        }
+
+        if (!selectedItem) {
+            selectedItem = $(componentSelector + '_instruction').getValue();
+        }
+        if (!param) {
+            param = $(componentSelector + '_instruction_param').getValue();
+        }
+
+        var row;
+
+        if (rowId) {
+            row = $(rowId);
+            row.descendants().each(function(e){e.remove()});
+            insertRow = false;
+        } else {
+
+            rowId = 'instruction-' + new Date().getTime();
+            row = new Element('tr', {id: rowId, 'class': 'instruction-container'});
+        }
+
+        var labelData = new Element('td', {'class': 'label'});
+
+        var label = new Element('label', {style: 'position: absolute; margin-left: 100px;'});
+        label.insert(componentSelector[0].toUpperCase() + componentSelector.slice(1));
+
+        labelData.insert(label);
+
+        var editButton = new Element('button', {
+            type: 'button',
+            'data-type': componentSelector,
+            'data-instruction': selectedItem,
+            'data-param': param,
+            'data-row': rowId
+        });
+        editButton.observe('click', editInstruction);
+        editButton.insert('Edit');
+        labelData.insert(editButton);
+
+        var deleteButton = new Element('button', {type: 'button', 'class': 'back', 'data-delete': rowId});
+        deleteButton.observe('click', removeRow);
+        deleteButton.insert('Delete');
+        labelData.insert(deleteButton);
+
+        var labelRow = new Element('tr');
+        labelRow.insert(labelData);
+        row.insert(labelRow);
+
+        var valueRow = new Element('td', {'class': 'value'});
+        valueRow.insert({bottom: selectedItem});
+        if (param) {
+            valueRow.insert({bottom: ': ' + param});
+        }
+        row.insert({bottom: valueRow});
+
+        var formInstructions = new Element('input', {type: 'hidden', value: rowId, name: 'instructions[]'});
+        var formType = new Element('input', {type: 'hidden', value: componentSelector, name: rowId + '_type'});
+        var formClass = new Element('input', {type: 'hidden', value: selectedItem, name: rowId + '_class'});
+        var formParam = new Element('input', {type: 'hidden', value: param, name: rowId + '_param'});
+        row.insert(formInstructions);
+        row.insert(formType);
+        row.insert(formClass);
+        row.insert(formParam);
+
+        if (insertRow) {
+            $('form_instructions').select('tbody')[0].insert(row);
+        }
+
+        closeForm();
+    }
+
+
 
 
     var containerIds = <?php echo Zend_Json::encode($this->getHiddenContainerIds()); ?>;
 
     var builderRequirements = <?php echo Zend_Json::encode($this->typeParamRequirements()) ?>;
 
-    document.observe('keydown', function(e) {
-        if (Event.KEY_ESC != e.keyCode) return;
-        $('magium-builder-form-container-clickblocker').hide();
-    });
+    $('create-instruction').observe('click', setInstruction);
+    document.observe('keydown', closeForm);
+    $('cancel-instruction').observe('click', closeForm);
+    $('add-instruction-button').observe('click', addForm);
+    $('save-instruction').observe('click', saveForm);
+
+    var currentInstructions = <?php echo Zend_Json::encode($this->getForm()->getInstructionsAsArray()); ?>;
+
+    if (currentInstructions) {
+        $(currentInstructions).each(function(i) {
+           setInstruction(i.type, i.class, i.param);
+        });
+    }
 
 </script>

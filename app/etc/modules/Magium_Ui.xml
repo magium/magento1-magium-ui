@@ -1,8 +1,0 @@
-<config>
-  <modules>
-    <Magium_Ui>
-      <active>true</active>
-      <codePool>community</codePool>
-    </Magium_Ui>
-  </modules>
-</config>
