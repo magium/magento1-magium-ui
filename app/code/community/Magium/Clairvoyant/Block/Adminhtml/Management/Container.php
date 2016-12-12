@@ -28,8 +28,9 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Container
         $this->_updateButton('save', 'label', $this->__('Save Test'));
 
         $this->_addButton('execute_test', array(
-            'label' => Mage::helper('adminhtml')->__('Execute Test'),
-            'class' => 'save',
+            'label'     => Mage::helper('adminhtml')->__('Execute Test'),
+            'class'     => 'save',
+            'onclick'   => 'executeTest()'
         ), -100);
 
 

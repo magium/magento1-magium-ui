@@ -1,10 +1,10 @@
 <?php
 
-/* @var $this Magium_Ui_Block_Adminhtml_Management_Builder */
+/* @var $this Magium_Clairvoyant_Block_Adminhtml_Management_Builder */
 
 ?>
 <style>
-    #magium-builder-form-container-clickblocker {
+    .magium-clickbocker {
         width: 100%;
         height: 100%;
         position: fixed;
@@ -14,14 +14,13 @@
         z-index: 10000;
     }
 
-    #magium-builder-form-container {
+    .magium-form-container {
         position: fixed;
         top: 25%;
         left: 25%;
         margin-top: -50px;
         margin-left: -50px;
         width: 50%;
-        height: 250px;
         background-color: white;
         padding: 20px;
         border: 1px solid #656565;
@@ -37,9 +36,13 @@
         margin-right: 10px;
     }
 
+    #current_execution_injections table {
+        width: 100%;
+    }
+
 </style>
-<div id="magium-builder-form-container-clickblocker" style="display: none; ">
-    <div id="magium-builder-form-container">
+<div id="magium-builder-form-container-clickblocker" class="magium-clickbocker" style="display: none; ">
+    <div id="magium-builder-form-container" class="magium-form-container">
         <h3 class="icon-head">Magium Instruction</h3>
         <?php echo $this->getForm()->toHtml(); ?>
         <button type="button" id="create-instruction">Create Instruction</button>
@@ -47,11 +50,50 @@
         <button type="button" id="cancel-instruction" class="back">Cancel</button>
     </div>
 </div>
+<div id="magium-execution-form-container-clickblocker" class="magium-clickbocker" style="display: none; ">
+    <div id="magium-execution-form-container" class="magium-form-container">
+        <h3 class="icon-head">Execute Test</h3>
+        <?php echo $this->getChildHtml('magium_execute_instruction_form'); ?>
+        <button type="button" id="add-injection">Add Injection</button>
+        <button type="button" id="execute-test">Execute Test</button>
+        <button type="button" id="cancel-execution" class="back">Cancel</button>
+    </div>
+</div>
 <button id="add-instruction-button" type="button">Add Instruction...</button>
 <script type="text/javascript">
 
-    function addForm()
-    {
+    function executeTest() {
+        $('magium-execution-form-container-clickblocker').show();
+    }
+
+    function deleteInjection() {
+        $(this.readAttribute('data-delete')).remove();
+    }
+
+    function addInjection() {
+        rowId = 'injection-' + new Date().getTime();
+        var injectionRow = new Element('tr', {id: rowId});
+        var deleteCol = new Element('td');
+        var deleteButton = new Element('button', {'data-delete': rowId});
+        deleteButton.insert('Delete');
+        deleteButton.observe('click', deleteInjection);
+        deleteCol.insert(deleteButton);
+        var identifier = new Element('td');
+        identifier.insert($('execution_identifier').getValue());
+        var model = new Element('td');
+        model.insert($('execution_model').getValue());
+        var pk = new Element('td');
+        pk.insert($('execution_primary_key').getValue());
+
+        injectionRow.insert(deleteCol);
+        injectionRow.insert(identifier);
+        injectionRow.insert(model);
+        injectionRow.insert(pk);
+
+        $('current_execution_injections').select('tbody')[0].insert(injectionRow);
+    }
+
+    function addForm() {
         $('create-instruction').show();
         $('save-instruction').hide();
         showForm();
@@ -111,6 +153,7 @@
     {
         if (e && e.keyCode && Event.KEY_ESC != e.keyCode) return;
         $('magium-builder-form-container-clickblocker').hide();
+        $('magium-execution-form-container-clickblocker').hide();
     }
 
     function removeRow(e)
@@ -216,9 +259,6 @@
         closeForm();
     }
 
-
-
-
     var containerIds = <?php echo Zend_Json::encode($this->getHiddenContainerIds()); ?>;
 
     var builderRequirements = <?php echo Zend_Json::encode($this->typeParamRequirements()) ?>;
@@ -226,6 +266,8 @@
     $('create-instruction').observe('click', setInstruction);
     document.observe('keydown', closeForm);
     $('cancel-instruction').observe('click', closeForm);
+    $('cancel-execution').observe('click', closeForm);
+    $('add-injection').observe('click', addInjection);
     $('add-instruction-button').observe('click', addForm);
     $('save-instruction').observe('click', saveForm);
 

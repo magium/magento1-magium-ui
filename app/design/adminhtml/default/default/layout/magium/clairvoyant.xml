@@ -34,7 +34,10 @@
         </reference>
         <reference name="content">
             <block name="magium_clairvoyant_management_container" type="magium_clairvoyant/adminhtml_management_container" />
-            <block name="magium_clairvoyant_management_builder" type="magium_clairvoyant/adminhtml_management_builder" />
+            <block name="magium_clairvoyant_management_builder" type="magium_clairvoyant/adminhtml_management_builder">
+                <block name="magium_execute_instruction_form" type="magium_clairvoyant/adminhtml_management_form_execute">
+                </block>
+            </block>
         </reference>
     </adminhtml_magiumui_management_index>
     <adminhtml_magiumui_execution_index>
