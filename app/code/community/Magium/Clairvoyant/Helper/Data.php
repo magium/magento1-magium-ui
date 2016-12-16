@@ -17,4 +17,24 @@ class Magium_Clairvoyant_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->_testCase;
     }
 
+    /**
+     * @return Magium_Clairvoyant_Model_Instruction_Test
+     */
+
+    public function getInstructionTestCase()
+    {
+        $testCase = Mage::getModel('magium_clairvoyant/instruction_test');
+        $initializer = Mage::getModel(
+            'magium_clairvoyant/instruction_initializer',
+            Magium\TestCaseConfiguration::class
+        );
+        if ($testCase instanceof Magium_Clairvoyant_Model_Instruction_Test) {
+            if ($initializer instanceof Magium_Clairvoyant_Model_Instruction_Initializer) {
+                $initializer->initialize($testCase);
+                return $testCase;
+            }
+        }
+        return null;
+    }
+
 }

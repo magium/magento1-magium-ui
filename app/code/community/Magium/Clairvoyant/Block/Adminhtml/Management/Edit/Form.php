@@ -19,14 +19,8 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Edit_Form extends Mage_Admin
 
     protected function _prepareForm()
     {
-        $form = new Varien_Data_Form([
-            'id' => 'edit_form',
-            'action' => $this->getUrl('*/*/saveTest',
-                array('id' => $this->getRequest()->getParam('id'), 'store' => $this->getRequest()->getParam('store', 0))),
-            'method' => 'post',
-            'enctype' => 'multipart/form-data',
-        ]);
-        $form->setUseContainer(true);
+        $form = new Varien_Data_Form();
+        $form->setUseContainer(false);
 
         $fieldset = $form->addFieldset('header_fieldset', array(
             'legend' => $this->__('Setup')
@@ -68,7 +62,6 @@ function toggleInstructions() {
 </script>
 HTML;
 
-
         $fieldset->addField('pre_conditions', 'textarea', array(
             'label' => $this->__('Preconditions'),
             'required' => false,
@@ -94,14 +87,4 @@ HTML;
         return parent::_prepareForm();
     }
 
-    /**
-     *
-     * @return array
-     */
-    protected function _getFormData()
-    {
-        $data = [];
-
-        return (array)$data;
-    }
 }

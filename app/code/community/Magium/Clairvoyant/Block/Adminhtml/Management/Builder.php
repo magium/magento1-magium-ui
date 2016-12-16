@@ -48,6 +48,9 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Builder extends Mage_Core_Bl
             $this->_form = Mage::getBlockSingleton('magium_clairvoyant/adminhtml_management_form_instruction');
 
         }
+        if ($this->_test instanceof Magium_Clairvoyant_Model_Test) {
+            $this->_form->setTest($this->_test);
+        }
         return $this->_form;
     }
 

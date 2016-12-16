@@ -8,12 +8,11 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Container
 
     protected function _construct()
     {
+        $this->setData('template', 'magium/widget/form/container.phtml');
         parent::_construct();
 
-        $this->_objectId = 'id';
         $this->_blockGroup = 'magium_clairvoyant';
         $this->_controller = 'adminhtml_management';
-        $this->_mode = 'edit';
     }
 
     public function setTest(Magium_Clairvoyant_Model_Test $test)
@@ -22,19 +21,28 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Container
         $this->getChild('form')->setTest($test);
     }
 
-    protected function  _prepareLayout()
+    protected function _beforeToHtml()
     {
 
+        $this->setData([
+            'id' => 'edit_form',
+            'method' => 'post',
+            'enctype' => 'multipart/form-data'
+        ]);
         $this->_updateButton('save', 'label', $this->__('Save Test'));
 
         $this->_addButton('execute_test', array(
-            'label'     => Mage::helper('adminhtml')->__('Execute Test'),
+            'label'     => Mage::helper('adminhtml')->__('Test Execution'),
             'class'     => 'save',
             'onclick'   => 'executeTest()'
         ), -100);
 
+        $this->setAction($this->getUrl('*/*/saveTest',
+            array('id' => $this->getRequest()->getParam('id'), 'store' => $this->getRequest()->getParam('store', 0))));
 
-        return parent::_prepareLayout();
+        $this->getLayout()->getBlock('magium_clairvoyant_instructions')->setTest($this->_test);
+
+        return parent::_beforeToHtml();
     }
 
     /**

@@ -42,6 +42,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Form_Instruction extends Mag
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form();
+        $form->setUseContainer(false);
         $fieldset = $form->addFieldset('instruction', array(
             'legend' => $this->__('Instruction Type')
         ));
@@ -74,7 +75,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Form_Instruction extends Mag
 
             $fieldset->addField($id . '_instruction', 'select', [
                 'label' => $this->__($label),
-                'required' => true,
+                'required' => false,
                 'name' => $id,
                 'values' => $typeOptions->toOptionArray(),
                 'onchange'   => 'ensureParameterProperlySet()'
@@ -82,7 +83,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Form_Instruction extends Mag
 
             $fieldset->addField($id . '_instruction_param', 'text', [
                 'label' => $this->__('Parameter'),
-                'required'  => true,
+                'required'  => false,
                 'name' => $id . '_param'
             ]);
 

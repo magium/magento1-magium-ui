@@ -38,6 +38,63 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
         $this->renderLayout();
     }
 
+    public function executeAction()
+    {
+        $post = $this->getRequest()->getPost();
+        $helper = Mage::helper('magium_clairvoyant');
+        if ($helper instanceof Magium_Clairvoyant_Helper_Data) {
+            $test = $helper->getInstructionTestCase();
+            $test->setName('testExecute');
+
+            foreach ($this->getRequest()->getPost('injections', []) as $injection) {
+                $identifier = $this->getRequest()->getPost('identifier-' . $injection);
+                $model = $this->getRequest()->getPost('model-' . $injection);
+                $pk = $this->getRequest()->getPost('primary-key-' . $injection);
+                $instance = Mage::getModel($model)->load($pk);
+                $test->getDi()->instanceManager()->addSharedInstance($instance, 'product');
+                $test->getDi()->instanceManager()->addAlias('product', get_class($instance));
+            }
+            $interpolator = $test->getDi()->get(\Magium\TestCase\Configurable\Interpolator::class);
+            if ($interpolator instanceof \Magium\TestCase\Configurable\Interpolator) {
+                $url = $this->getRequest()->getPost('command_open');
+                $url = $interpolator->interpolate($url);
+                $test->setBaseUrl($url);
+
+                $instructions = $test->getDi()->get(\Magium\TestCase\Configurable\InstructionsCollection::class);
+                $test->setInstructions($instructions);
+                if ($instructions instanceof \Magium\TestCase\Configurable\InstructionsCollection) {
+                    foreach ($this->getRequest()->getPost('instructions', []) as $instruction) {
+                        $class = $this->getRequest()->getPost($instruction . '_class');
+                        $introspection = Mage::getModel('magium_clairvoyant/introspected');
+                        $introspection->load($class, 'class');
+                        if ($introspection->getId()) {
+                            $param = $this->getRequest()->getPost($instruction . '_param');
+                            if ($param) {
+                                $param = $interpolator->interpolate($param);
+                                $param = [$param];
+                            }
+                            $type = $introspection->getFunctionalType();
+                            $reflection = new ReflectionClass($type);
+                            $methods = $reflection->getMethods();
+                            if ($methods) {
+                                $method = $methods[0];
+                                $genericInstruction = new \Magium\TestCase\Configurable\GenericInstruction(
+                                    $class,
+                                    $method->getName(),
+                                    $param
+                                );
+                                $instructions->addInstruction($genericInstruction);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $test->run();
+        }
+
+    }
+
     public function saveTestAction()
     {
         $test = Mage::getModel('magium_clairvoyant/test');

@@ -6,6 +6,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Form_Execute extends Mage_Ad
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form();
+        $form->setUseContainer(false);
         $fieldset = $form->addFieldset('execution_injection', array(
             'legend' => $this->__('Add Test Injections')
         ));
