@@ -4,6 +4,11 @@ class Magium_Clairvoyant_Model_Instruction_Initializer extends \Magium\TestCase\
 {
     protected function getDefaultConfiguration()
     {
+        $configuration = $this->testCaseConfigurationObject->getWebDriverConfiguration();
+        $magentoSetting = Mage::getStoreConfig('magium/general/selenium_url');
+        if ($magentoSetting) {
+            $configuration['url']['default'] = $magentoSetting;
+        }
         return [
             'definition' => [
                 'class' => [
@@ -12,7 +17,7 @@ class Magium_Clairvoyant_Model_Instruction_Initializer extends \Magium\TestCase\
                     ],
 
                     'Magium\WebDriver\WebDriverFactory' => [
-                        'create'       => $this->testCaseConfigurationObject->getWebDriverConfiguration()
+                        'create'       => $configuration
                     ]
                 ]
             ],
