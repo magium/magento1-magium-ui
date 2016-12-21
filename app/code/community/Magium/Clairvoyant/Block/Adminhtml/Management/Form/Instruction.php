@@ -10,7 +10,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Form_Instruction extends Mag
      */
     protected $_test;
 
-    public function setTest(Magium_Clairvoyant_Model_Test $test)
+    public function setTest(Magium_Clairvoyant_Model_Test $test = null)
     {
         $this->_test = $test;
     }

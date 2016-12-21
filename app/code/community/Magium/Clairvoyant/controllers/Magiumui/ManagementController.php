@@ -40,14 +40,12 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
 
     public function executeAction()
     {
-        $post = $this->getRequest()->getPost();
         $helper = Mage::helper('magium_clairvoyant');
         if ($helper instanceof Magium_Clairvoyant_Helper_Data) {
             $test = $helper->getInstructionTestCase();
             $test->setName('testExecute');
 
             foreach ($this->getRequest()->getPost('injections', []) as $injection) {
-                $identifier = $this->getRequest()->getPost('identifier-' . $injection);
                 $model = $this->getRequest()->getPost('model-' . $injection);
                 $pk = $this->getRequest()->getPost('primary-key-' . $injection);
                 $instance = Mage::getModel($model)->load($pk);
@@ -89,9 +87,40 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
                     }
                 }
             }
+            $logger = $test->getLogger();
+            $writer = Mage::getModel('magium_clairvoyant/logger_logger');
+            if ($writer instanceof Magium_Clairvoyant_Model_Logger_Logger) {
+                $logger->addWriter($writer);
+                $error = null;
+                try {
+                    $test->run();
+                } catch (Exception $e) {
+                    $error = $e->getMessage();
+                }
+                $events = $writer->getEvents();
 
-            $test->run();
+                $result = [
+                    'passed'    => $error === null,
+                    'message'   => ($error === null)?'Test passed':$error,
+                    'events'    => $events
+                ];
+
+            } else {
+                $result = [
+                    'passed'    => false,
+                    'message'   => 'Invalid logger'
+                ];
+            }
+
+        } else {
+            $result = [
+                'passed'    => false,
+                'message'   => 'Invalid helper'
+            ];
         }
+
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($result));
 
     }
 

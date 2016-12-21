@@ -31,7 +31,7 @@ class Magium_Clairvoyant_Block_Adminhtml_Management_Builder extends Mage_Core_Bl
         $this->setTemplate('magium/management.phtml');
     }
 
-    public function setTest(Magium_Clairvoyant_Model_Test $test)
+    public function setTest(Magium_Clairvoyant_Model_Test $test = null)
     {
         $this->_test = $test;
         $this->getForm()->setTest($this->_test);
