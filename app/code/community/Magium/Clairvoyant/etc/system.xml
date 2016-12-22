@@ -35,9 +35,14 @@
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
                         </selenium_url>
+                        <log translate="label">
+                            <label>Log Location</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <comment>Either the relative path inside the Magento root or the absolute path in the filesystem</comment>
+                            <show_in_default>1</show_in_default>
+                        </log>
                     </fields>
                 </general>
             </groups>

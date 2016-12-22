@@ -9,6 +9,21 @@ class Magium_Clairvoyant_Model_Instruction_Initializer extends \Magium\TestCase\
         if ($magentoSetting) {
             $configuration['url']['default'] = $magentoSetting;
         }
+
+        $writers = [
+            'name' => 'Zend\Log\Writer\Noop',
+            'options' => []
+        ];
+        $magentoSetting = Mage::getStoreConfig('magium/general/log');
+        if ($magentoSetting) {
+            $writers = [
+                'name' => \Zend\Log\Writer\Stream::class,
+                'options' => [
+                    'stream' => $magentoSetting
+                ]
+            ];
+        }
+
         return [
             'definition' => [
                 'class' => [
@@ -29,10 +44,7 @@ class Magium_Clairvoyant_Model_Instruction_Initializer extends \Magium\TestCase\
                     'parameters'    => [
                         'options'   => [
                             'writers' => [
-                                [
-                                    'name' => 'Zend\Log\Writer\Noop',
-                                    'options' => []
-                                ]
+                                $writers
                             ]
                         ]
                     ]

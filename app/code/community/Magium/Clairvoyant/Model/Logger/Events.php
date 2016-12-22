@@ -1,6 +1,6 @@
 <?php
 
-class Magium_Clairvoyant_Model_Logger_Logger extends \Zend\Log\Writer\AbstractWriter
+class Magium_Clairvoyant_Model_Logger_Events extends \Zend\Log\Writer\AbstractWriter
 {
     protected $_events = [];
 

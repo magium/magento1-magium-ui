@@ -40,6 +40,41 @@
         width: 100%;
     }
 
+    #log-container {
+        max-height: 250px;
+        overflow: scroll;
+
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        background-color: #333;
+
+        margin: 100px auto;
+        -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+        animation: sk-rotateplane 1.2s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-rotateplane {
+        0% { -webkit-transform: perspective(120px) }
+        50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+        100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+    }
+
+    @keyframes sk-rotateplane {
+        0% {
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+            -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+        } 50% {
+              transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+              -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+          } 100% {
+                transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+                -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            }
+    }
+
 </style>
 
 <div id="magium-builder-form-container-clickblocker" class="magium-clickbocker" style="display: none; ">
@@ -58,6 +93,11 @@
         <button type="button" id="add-injection">Add Injection</button>
         <button type="button" id="execute-test">Execute Test</button>
         <button type="button" id="cancel-execution" class="back">Cancel</button>
+        <div class="spinner" style="display: none; " id="spinner"></div>
+        <div style="display:none;", id="log-container">
+            <h3>Execution Log...</h3>
+            <ul style="list-style: none; " id="log"></ul>
+        </div>
     </div>
 </div>
 <button id="add-instruction-button" type="button">Add Instruction...</button>
@@ -73,15 +113,29 @@
     }
 
     function doExecuteTest() {
-
+        $('log').descendants().each(function (e) {
+            e.remove()
+        });
+        $('spinner').show();
         new Ajax.Request("<?php echo $this->getUrl('*/*/execute') ?>",
             {
                 type: 'POST',
                 parameters: $('edit_form').serialize(true),
-                success: function (data) {
-
+                onSuccess: function (data) {
+                    $('log-container').show();
+                    $('spinner').hide();
+                    data = data.responseJSON;
+                    for (i in data.events) {
+                        var li = new Element('li');
+                        li.insert(data.events[i].message);
+                        $('log').insert(li);
+                    }
                 },
-                error: function () {
+                onError: function (data) {
+                    $('log-container').show();
+                    $('spinner').hide();
+                    console.log('error');
+                    console.log(data);
                 }
             });
     }

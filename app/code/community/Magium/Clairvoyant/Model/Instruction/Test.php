@@ -22,6 +22,7 @@ class Magium_Clairvoyant_Model_Instruction_Test extends \Magium\Magento\Abstract
 
     public function testExecute()
     {
+        Locale::setDefault(Mage::app()->getLocale()->getLocaleCode());
         if ($this->_baseUrl) {
             $this->getTheme()->set('baseUrl', $this->_baseUrl);
         }

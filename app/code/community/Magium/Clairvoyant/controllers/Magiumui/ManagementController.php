@@ -88,8 +88,8 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
                 }
             }
             $logger = $test->getLogger();
-            $writer = Mage::getModel('magium_clairvoyant/logger_logger');
-            if ($writer instanceof Magium_Clairvoyant_Model_Logger_Logger) {
+            $writer = Mage::getModel('magium_clairvoyant/logger_events');
+            if ($writer instanceof Magium_Clairvoyant_Model_Logger_Events) {
                 $logger->addWriter($writer);
                 $error = null;
                 try {
@@ -111,7 +111,6 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
                     'message'   => 'Invalid logger'
                 ];
             }
-
         } else {
             $result = [
                 'passed'    => false,
