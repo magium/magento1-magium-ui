@@ -36,6 +36,9 @@
                     <instruction>
                         <table>magium_clairvoyant_instruction</table>
                     </instruction>
+                    <event>
+                        <table>magium_clairvoyant_event</table>
+                    </event>
                 </entities>
             </magium_clairvoyant_resource>
         </models>
@@ -49,6 +52,64 @@
                 <class>Magium_Clairvoyant_Block</class>
             </magium_clairvoyant>
         </blocks>
+        <events>
+            <catalog_product_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_product_save_commit_after>
+            <catalog_product_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_product_delete_commit_after>
+            <catalog_category_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_category_save_commit_after>
+            <catalog_category_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_category_delete_commit_after>
+            <admin_system_config_section_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </admin_system_config_section_commit_after>
+            <cms_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </cms_save_commit_after>
+            <cms_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </cms_delete_commit_after>
+        </events>
     </global>
     <magium>
         <base_types>
@@ -242,27 +303,27 @@
             </sections>
         </configuration>
         <execution>
-            <catalog_product_save_after_commit>
+            <catalog_product_save_commit_after>
                 <label>Product Save</label>
-            </catalog_product_save_after_commit>
-            <catalog_product_delete_after_commit>
+            </catalog_product_save_commit_after>
+            <catalog_product_delete_commit_after>
                 <label>Product Delete</label>
-            </catalog_product_delete_after_commit>
-            <catalog_category_save_after_commit>
+            </catalog_product_delete_commit_after>
+            <catalog_category_save_commit_after>
                 <label>Category Save</label>
-            </catalog_category_save_after_commit>
-            <catalog_category_delete_after_commit>
+            </catalog_category_save_commit_after>
+            <catalog_category_delete_commit_after>
                 <label>Category Delete</label>
-            </catalog_category_delete_after_commit>
-            <admin_system_config_section_save_after>
+            </catalog_category_delete_commit_after>
+            <admin_system_config_section_commit_after>
                 <label>Configuration Save</label>
-            </admin_system_config_section_save_after>
-            <cms_save_after_commit>
+            </admin_system_config_section_commit_after>
+            <cms_save_commit_after>
                 <label>CMS Page Save</label>
-            </cms_save_after_commit>
-            <cms_delete_after_commit>
+            </cms_save_commit_after>
+            <cms_delete_commit_after>
                 <label>CMS Page Delete</label>
-            </cms_delete_after_commit>
+            </cms_delete_commit_after>
         </execution>
     </magium>
     <adminhtml>

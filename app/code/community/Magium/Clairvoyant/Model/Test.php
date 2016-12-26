@@ -7,6 +7,10 @@
  * @method setName($name)
  * @method setPreConditions($conditions)
  * @method setStoreId($storeid)
+ * @method string getCommandOpen()
+ * @method string getName()
+ * @method string getPreConditions()
+ * @method string getStoreId()
  */
 
 class Magium_Clairvoyant_Model_Test extends Mage_Core_Model_Abstract

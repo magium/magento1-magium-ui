@@ -53,7 +53,8 @@
         </reference>
         <reference name="content">
             <block name="magium_clairvoyant_execution_container"
-                   type="magium_clairvoyant/adminhtml_execution_container"/>
+                   type="magium_clairvoyant/adminhtml_execution_grid">
+            </block>
         </reference>
     </adminhtml_magiumui_execution_index>
 

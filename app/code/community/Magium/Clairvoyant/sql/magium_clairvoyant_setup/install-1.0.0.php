@@ -204,4 +204,48 @@ if (!$installer->getConnection()->isTableExists($tableName)) {
     $installer->getConnection()->createTable($table);
 }
 
+$tableName = $installer->getTable('magium_clairvoyant/event');
+if (!$installer->getConnection()->isTableExists($tableName)) {
+
+    $table = $installer->getConnection()->newTable($tableName)
+        ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+            array(
+                'unsigned' => true,
+                'nullable' => false,
+                'primary' => true,
+                'identity' => true
+            ), 'ID')
+        ->addColumn('test_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+            array(
+                'nullable' => false,
+            ), 'Test')
+        ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+            array(
+                'nullable' => false,
+            ), 'Store ID')
+        ->addColumn('event', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255,
+            array(
+                'nullable' => false,
+            ), 'Event')
+        ->addForeignKey(
+            $installer->getFkName('magium_clairvoyant/event', 'test_id', 'magium_clairvoyant/test', 'entity_id'),
+            'test_id',
+            $installer->getTable('magium_clairvoyant/test'),
+            'entity_id',
+            Varien_Db_Ddl_Table::ACTION_CASCADE,
+            Varien_Db_Ddl_Table::ACTION_CASCADE
+        )
+        ->addForeignKey(
+            $installer->getFkName('magium_clairvoyant/event', 'store_id', 'core/store', 'store_id'),
+            'store_id',
+            $installer->getTable('core_store'),
+            'store_id',
+            Varien_Db_Ddl_Table::ACTION_CASCADE,
+            Varien_Db_Ddl_Table::ACTION_CASCADE
+        )
+        ->setComment('Magium Test Event Associations');
+    $installer->getConnection()->createTable($table);
+}
+
+
 $installer->endSetup();
