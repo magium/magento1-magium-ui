@@ -58,6 +58,15 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
                 $url = $interpolator->interpolate($url);
                 $test->setBaseUrl($url);
 
+                $preConditions = $this->getRequest()->getPost('pre_conditions');
+                $preConditions = explode("\n", $preConditions);
+                $injectConditions = [];
+                foreach ($preConditions as $condition) {
+                    $condition = $interpolator->interpolate(trim($condition));
+                    $injectConditions[] = $condition;
+                }
+                $test->setPreconditions($injectConditions);
+
                 $instructions = $test->getDi()->get(\Magium\TestCase\Configurable\InstructionsCollection::class);
                 $test->setInstructions($instructions);
                 if ($instructions instanceof \Magium\TestCase\Configurable\InstructionsCollection) {

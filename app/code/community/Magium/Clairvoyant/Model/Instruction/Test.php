@@ -10,6 +10,8 @@ class Magium_Clairvoyant_Model_Instruction_Test extends \Magium\Magento\Abstract
 
     protected $_instructions;
 
+    protected $_preConditions = [];
+
     public function setInstructions(\Magium\TestCase\Configurable\InstructionsCollection $instructions)
     {
         $this->_instructions = $instructions;
@@ -20,8 +22,22 @@ class Magium_Clairvoyant_Model_Instruction_Test extends \Magium\Magento\Abstract
         $this->_baseUrl = $url;
     }
 
+    public function setPreconditions(array $preConditions)
+    {
+        $this->_preConditions = $preConditions;
+    }
+
     public function testExecute()
     {
+        $executor = $this->get(\Magium\TestCase\Executor::class);
+        if ($executor instanceof \Magium\TestCase\Executor) {
+            foreach ($this->_preConditions as $condition) {
+                $result = $executor->evaluate($condition);
+                if (!$result) {
+                    self::markTestSkipped('Evaluation returned false for ' . $condition);
+                }
+            }
+        }
         Locale::setDefault(Mage::app()->getLocale()->getLocaleCode());
         if ($this->_baseUrl) {
             $this->getTheme()->set('baseUrl', $this->_baseUrl);
