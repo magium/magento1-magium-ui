@@ -21,7 +21,7 @@ class Magium_Clairvoyant_Helper_Data extends Mage_Core_Helper_Abstract
      * @return Magium_Clairvoyant_Model_Instruction_Test
      */
 
-    public function getInstructionTestCase()
+    public function getInstructionTestCase($bypassWebDriver = false)
     {
         $testCase = Mage::getModel('magium_clairvoyant/instruction_test');
         $initializer = Mage::getModel(
@@ -30,6 +30,7 @@ class Magium_Clairvoyant_Helper_Data extends Mage_Core_Helper_Abstract
         );
         if ($testCase instanceof Magium_Clairvoyant_Model_Instruction_Test) {
             if ($initializer instanceof Magium_Clairvoyant_Model_Instruction_Initializer) {
+                $initializer->bypassWebDriver($bypassWebDriver);
                 $initializer->initialize($testCase);
                 return $testCase;
             }

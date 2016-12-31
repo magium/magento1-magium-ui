@@ -2,6 +2,42 @@
 
 class Magium_Clairvoyant_Model_Instruction_Initializer extends \Magium\TestCase\Initializer
 {
+
+    protected $_bypassWebDriver = false;
+
+    public function bypassWebDriver($bypass = true)
+    {
+        $this->_bypassWebDriver = $bypass;
+    }
+
+    protected function configureWebDriver(\Magium\AbstractTestCase $testCase)
+    {
+        if (!$this->_bypassWebDriver) {
+            parent::configureWebDriver($testCase);
+        }
+    }
+
+    protected function initLoggingExecutor(\Magium\AbstractTestCase $testCase)
+    {
+        if (!$this->_bypassWebDriver) {
+            parent::initLoggingExecutor($testCase);
+        }
+    }
+
+    protected function configureClairvoyant(\Magium\AbstractTestCase $testCase)
+    {
+        if (!$this->_bypassWebDriver) {
+            parent::configureClairvoyant($testCase);
+        }
+    }
+
+    protected function setCharacteristics(\Magium\AbstractTestCase $testCase)
+    {
+        if (!$this->_bypassWebDriver) {
+            parent::setCharacteristics($testCase);
+        }
+    }
+
     protected function getDefaultConfiguration()
     {
         $configuration = $this->testCaseConfigurationObject->getWebDriverConfiguration();

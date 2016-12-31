@@ -11,6 +11,7 @@
  * @method setLog(string $serialized)
  * @method setStatus(string $status)
  * @method setCreatedAt($date)
+ * @method setCompletedAt($date)
  * @method setExecutedAt($date)
  * @method string getCommandOpen()
  * @method string getName()
@@ -20,6 +21,7 @@
  * @method getLog()
  * @method getStatus()
  * @method getCreatedAt()
+ * @method getCompletedAt()
  * @method getExecutedAt()
  */
 

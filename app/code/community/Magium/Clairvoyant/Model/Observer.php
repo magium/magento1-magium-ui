@@ -74,15 +74,11 @@ class Magium_Clairvoyant_Model_Observer
     {
         $helper = Mage::helper('magium_clairvoyant');
         if ($helper instanceof Magium_Clairvoyant_Helper_Data) {
-            $testInstance = $helper->getInstructionTestCase();
+            $testInstance = $helper->getInstructionTestCase(
+                Mage::getStoreConfigFlag(self::CONFIG_QUEUE_EXECUTION)
+            );
             $testInstance->setName('testExecute');
-            $logger = $testInstance->getLogger();
-            $writer = Mage::getModel('magium_clairvoyant/logger_events');
-            if ($writer instanceof Magium_Clairvoyant_Model_Logger_Events) {
-                $logger->addWriter($writer);
-            } else {
-                return;
-            }
+
 
             $di = $testInstance->getDi();
             foreach ($event->getData() as $key => $data) {
@@ -149,16 +145,27 @@ class Magium_Clairvoyant_Model_Observer
                     return;
                 }
 
+                $logger = $testInstance->getLogger();
+                $writer = Mage::getModel('magium_clairvoyant/logger_events');
+                if ($writer instanceof Magium_Clairvoyant_Model_Logger_Events) {
+                    $logger->addWriter($writer);
+                } else {
+                    return;
+                }
+
                 $queue->setExecutedAt(Varien_Date::now());
                 $queue->save();
 
                 $result = $testInstance->run();
+
+                $queue->setLog(serialize($writer->getEvents()));
+                $queue->setCompletedAt(Varien_Date::now());
+
                 $passed = $result->passed();
                 $skipped = $result->skipped();
-                $queue->setLog(serialize($writer->getEvents()));
+
                 if (count($passed) == 1) {
                     $queue->setStatus(self::TEST_STATUS_PASSED);
-                    $queue->save();
                     Mage::getSingleton('adminhtml/session')->addSuccess(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test "%s" passed',
@@ -167,7 +174,6 @@ class Magium_Clairvoyant_Model_Observer
                     );
                 } else if (count($skipped) == 1) {
                     $queue->setStatus(self::TEST_STATUS_SKIPPED);
-                    $queue->save();
                     Mage::getSingleton('adminhtml/session')->addSuccess(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test "%s" skipped',
@@ -176,7 +182,6 @@ class Magium_Clairvoyant_Model_Observer
                     );
                 } else {
                     $queue->setStatus(self::TEST_STATUS_PASSED);
-                    $queue->save();
                     Mage::getSingleton('adminhtml/session')->addError(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test %s failed',
@@ -184,7 +189,7 @@ class Magium_Clairvoyant_Model_Observer
                         )
                     );
                 }
-
+                $queue->save();
             }
 
         }
