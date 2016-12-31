@@ -83,11 +83,12 @@ class Magium_Clairvoyant_Model_Observer
                 && $instructionCollection instanceof \Magium\TestCase\Configurable\InstructionsCollection
             ) {
                 foreach ($instructions as $instruction) {
+                    $class = $instruction->getClass();
                     $param = $instruction->getParam();
                     $param = $interpolator->interpolate($param);
                     $method = $this->_getMethod($instruction);
                     $genericInstruction = new \Magium\TestCase\Configurable\GenericInstruction(
-                        $instruction->getClass(),
+                        $class,
                         $method,
                         $param
                     );
