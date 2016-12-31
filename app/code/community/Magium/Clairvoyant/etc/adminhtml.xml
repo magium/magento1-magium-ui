@@ -23,6 +23,11 @@
                             <action>adminhtml/magiumui_execution</action>
                             <sort_order>30</sort_order>
                         </test_execution>
+                        <test_queue translate="title" module="magium_clairvoyant">
+                            <title>Test Queue</title>
+                            <action>adminhtml/magiumui_queue</action>
+                            <sort_order>40</sort_order>
+                        </test_queue>
                     </children>
                 </magium>
             </children>

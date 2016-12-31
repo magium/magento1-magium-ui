@@ -22,19 +22,21 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <testing_url translate="label">
-                            <label>Testing URL</label>
+                        <email_report translate="label">
+                            <label>Report To Email Addresses</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </testing_url>
+                        </email_report>
                         <selenium_url translate="label">
                             <label>Selenium URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </selenium_url>
                         <log translate="label">
                             <label>Log Location</label>
@@ -42,7 +44,34 @@
                             <sort_order>30</sort_order>
                             <comment>Either the relative path inside the Magento root or the absolute path in the filesystem</comment>
                             <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
                         </log>
+                        <use_queue translate="label">
+                            <label>Use Test Run Queue</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <comment>Set to &quot;Yes&quot; to run via cron instead of inline with the triggered event.
+                            &quot;Yes&quot; is recommended for performance reasons, but setting to &quot;No&quot; will cause a transaction
+                            rollback if the test is executed within a transaction and fails.  That can be used to
+                            protect against accidentally saving bad data.</comment>
+                            <show_in_default>1</show_in_default>
+                        </use_queue>
+                        <throw_exception translate="label">
+                            <label>Throw Exception On Failure</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <comment>Throws an exception if there are failed tests.  This can be used to rollback a
+                            transaction if the test is executed during a transaction.</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <use_queue>0</use_queue>
+                            </depends>
+                        </throw_exception>
                     </fields>
                 </general>
             </groups>

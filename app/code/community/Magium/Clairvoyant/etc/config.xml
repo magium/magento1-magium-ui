@@ -39,6 +39,9 @@
                     <event>
                         <table>magium_clairvoyant_event</table>
                     </event>
+                    <queue>
+                        <table>magium_clairvoyant_queue</table>
+                    </queue>
                 </entities>
             </magium_clairvoyant_resource>
         </models>

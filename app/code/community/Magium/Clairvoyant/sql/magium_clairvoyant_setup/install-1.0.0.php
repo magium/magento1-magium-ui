@@ -247,5 +247,60 @@ if (!$installer->getConnection()->isTableExists($tableName)) {
     $installer->getConnection()->createTable($table);
 }
 
+$tableName = $installer->getTable('magium_clairvoyant/queue');
+if (!$installer->getConnection()->isTableExists($tableName)) {
+
+    $table = $installer->getConnection()->newTable($tableName)
+        ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+            array(
+                'unsigned' => true,
+                'nullable' => false,
+                'primary' => true,
+                'identity' => true
+            ), 'ID')
+        ->addColumn('name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255,
+            array(
+                'nullable' => false,
+            ), 'Name')
+        ->addColumn('event', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255,
+            array(
+                'nullable' => false,
+            ), 'Event')
+        ->addColumn('command_open', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255,
+            array(
+                'nullable' => false,
+            ), 'Open Command')
+        ->addColumn('pre_conditions', Varien_Db_Ddl_Table::TYPE_TEXT, null,
+            array(
+                'nullable' => true,
+            ), 'Value')
+        ->addColumn('actions_serialized', Varien_Db_Ddl_Table::TYPE_TEXT, null,
+            array(
+                'nullable' => false,
+            ), 'Serialized Actions')
+        ->addColumn('log', Varien_Db_Ddl_Table::TYPE_TEXT, null,
+            array(
+                'nullable' => false,
+            ), 'Log of actions')
+        ->addColumn('status', Varien_Db_Ddl_Table::TYPE_VARCHAR, 16,
+            array(
+                'nullable' => false,
+            ), 'Test Status')
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null,
+            array(
+                'nullable' => false,
+            ), 'Created At')
+        ->addColumn('executed_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null,
+            array(
+                'nullable' => true,
+            ), 'Executed At')
+        ->addColumn('completed_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null,
+            array(
+                'nullable' => true,
+            ), 'Completed At')
+        ->setComment('Magium Test Runs');
+    $installer->getConnection()->createTable($table);
+}
+
 
 $installer->endSetup();

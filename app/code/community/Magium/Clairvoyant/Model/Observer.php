@@ -3,6 +3,14 @@
 class Magium_Clairvoyant_Model_Observer
 {
 
+    const CONFIG_QUEUE_EXECUTION = 'magium/general/use_queue';
+
+    const TEST_STATUS_PASSED = 'passed';
+    const TEST_STATUS_QUEUED = 'queued';
+    const TEST_STATUS_FAILED = 'failed';
+    const TEST_STATUS_IN_PROCESS = 'in_process';
+    const TEST_STATUS_SKIPPED = 'skipped';
+
     protected $_introspected = [];
 
     public function observe(Varien_Event_Observer $observer)
@@ -68,6 +76,14 @@ class Magium_Clairvoyant_Model_Observer
         if ($helper instanceof Magium_Clairvoyant_Helper_Data) {
             $testInstance = $helper->getInstructionTestCase();
             $testInstance->setName('testExecute');
+            $logger = $testInstance->getLogger();
+            $writer = Mage::getModel('magium_clairvoyant/logger_events');
+            if ($writer instanceof Magium_Clairvoyant_Model_Logger_Events) {
+                $logger->addWriter($writer);
+            } else {
+                return;
+            }
+
             $di = $testInstance->getDi();
             foreach ($event->getData() as $key => $data) {
                 $di->instanceManager()->addSharedInstance($data, $key);
@@ -79,6 +95,7 @@ class Magium_Clairvoyant_Model_Observer
             $instructions = $test->getInstructions();
             $instructionCollection = $testInstance->get(\Magium\TestCase\Configurable\InstructionsCollection::class);
             $interpolator = $testInstance->get(\Magium\TestCase\Configurable\Interpolator::class);
+            $interpolatedInstructions = [];
             if ($interpolator instanceof \Magium\TestCase\Configurable\Interpolator
                 && $instructionCollection instanceof \Magium\TestCase\Configurable\InstructionsCollection
             ) {
@@ -92,22 +109,74 @@ class Magium_Clairvoyant_Model_Observer
                         $method,
                         $param
                     );
+                    $interpolatedInstructions[] = $genericInstruction;
                     $instructionCollection->addInstruction($genericInstruction);
 
                 }
                 $url = $interpolator->interpolate($test->getCommandOpen());
                 $testInstance->setBaseUrl($url);
+                $preConditions = explode("\n", $test->getPreConditions());
+                $injectConditions = [];
+                foreach ($preConditions as $condition) {
+                    $condition = $interpolator->interpolate(trim($condition));
+                    $injectConditions[] = $condition;
+                }
+                $test->setPreconditions($injectConditions);
+                $testInstance->setPreconditions($injectConditions);
                 $testInstance->setInstructions($instructionCollection);
+
+                $queue = Mage::getModel('magium_clairvoyant/queue');
+                if ($queue instanceof Magium_Clairvoyant_Model_Queue){
+                    $queue->setEvent($event->getEvent()->getName());
+                    $queue->setName($test->getName());
+                    $queue->setPreConditions(serialize($injectConditions));
+                    $queue->setCommandOpen($url);
+                    $queue->setActionsSerialized(serialize($interpolatedInstructions));
+                    $queue->setCreatedAt(Varien_Date::now());
+                    $queue->setStatus(self::TEST_STATUS_QUEUED);
+                } else {
+                    return;
+                }
+
+                if (Mage::getStoreConfigFlag(self::CONFIG_QUEUE_EXECUTION)) {
+                    Mage::getSingleton('adminhtml/session')->addSuccess(
+                        Mage::helper('magium_clairvoyant')->__(
+                            'Magium test "%s" queued',
+                            $test->getName()
+                        )
+                    );
+                    $queue->save();
+                    return;
+                }
+
+                $queue->setExecutedAt(Varien_Date::now());
+                $queue->save();
+
                 $result = $testInstance->run();
                 $passed = $result->passed();
+                $skipped = $result->skipped();
+                $queue->setLog(serialize($writer->getEvents()));
                 if (count($passed) == 1) {
+                    $queue->setStatus(self::TEST_STATUS_PASSED);
+                    $queue->save();
                     Mage::getSingleton('adminhtml/session')->addSuccess(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test "%s" passed',
                             $test->getName()
                         )
                     );
+                } else if (count($skipped) == 1) {
+                    $queue->setStatus(self::TEST_STATUS_SKIPPED);
+                    $queue->save();
+                    Mage::getSingleton('adminhtml/session')->addSuccess(
+                        Mage::helper('magium_clairvoyant')->__(
+                            'Magium test "%s" skipped',
+                            $test->getName()
+                        )
+                    );
                 } else {
+                    $queue->setStatus(self::TEST_STATUS_PASSED);
+                    $queue->save();
                     Mage::getSingleton('adminhtml/session')->addError(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test %s failed',
