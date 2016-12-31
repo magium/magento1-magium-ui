@@ -1,0 +1,372 @@
+<?php
+
+/* @var $this Magium_Clairvoyant_Block_Adminhtml_Management_Builder */
+
+?>
+<style>
+    .magium-clickbocker {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+    }
+
+    .magium-form-container {
+        position: fixed;
+        top: 25%;
+        left: 25%;
+        margin-top: -50px;
+        margin-left: -50px;
+        width: 50%;
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #656565;
+        box-shadow: #656565 1px 1px 5px;
+        border-radius: 3px;
+    }
+
+    #form_instructions td.value {
+        width: 100%;
+    }
+
+    .instruction-delete-button {
+        margin-right: 10px;
+    }
+
+    #current_execution_injections table {
+        width: 100%;
+    }
+
+    #log-container {
+        max-height: 250px;
+        overflow: scroll;
+
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        background-color: #333;
+
+        margin: 100px auto;
+        -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+        animation: sk-rotateplane 1.2s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-rotateplane {
+        0% { -webkit-transform: perspective(120px) }
+        50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+        100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+    }
+
+    @keyframes sk-rotateplane {
+        0% {
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+            -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+        } 50% {
+              transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+              -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+          } 100% {
+                transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+                -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            }
+    }
+
+</style>
+
+<div id="magium-builder-form-container-clickblocker" class="magium-clickbocker" style="display: none; ">
+    <div id="magium-builder-form-container" class="magium-form-container">
+        <h3 class="icon-head">Magium Instruction</h3>
+        <?php echo $this->getForm()->toHtml(); ?>
+        <button type="button" id="create-instruction">Create Instruction</button>
+        <button type="button" id="save-instruction" style="display: none;">Save Instruction</button>
+        <button type="button" id="cancel-instruction" class="back">Cancel</button>
+    </div>
+</div>
+<div id="magium-execution-form-container-clickblocker" class="magium-clickbocker" style="display: none; ">
+    <div id="magium-execution-form-container" class="magium-form-container">
+        <h3 class="icon-head">Execute Test</h3>
+        <?php echo $this->getChildHtml('magium_execute_instruction_form'); ?>
+        <button type="button" id="add-injection">Add Injection</button>
+        <button type="button" id="execute-test">Execute Test</button>
+        <button type="button" id="cancel-execution" class="back">Cancel</button>
+        <div class="spinner" style="display: none; " id="spinner"></div>
+        <div style="display:none;", id="log-container">
+            <h3>Execution Log...</h3>
+            <ul style="list-style: none; " id="log"></ul>
+        </div>
+    </div>
+</div>
+<button id="add-instruction-button" type="button">Add Instruction...</button>
+
+<script type="text/javascript">
+
+    function executeTest() {
+        $('magium-execution-form-container-clickblocker').show();
+    }
+
+    function deleteInjection() {
+        $(this.readAttribute('data-delete')).remove();
+    }
+
+    function doExecuteTest() {
+        $('log').descendants().each(function (e) {
+            e.remove()
+        });
+        $('spinner').show();
+        new Ajax.Request("<?php echo $this->getUrl('*/*/execute') ?>",
+            {
+                type: 'POST',
+                parameters: $('edit_form').serialize(true),
+                onSuccess: function (data) {
+                    $('log-container').show();
+                    $('spinner').hide();
+                    data = data.responseJSON;
+                    for (i in data.events) {
+                        var li = new Element('li');
+                        li.insert(data.events[i].message);
+                        $('log').insert(li);
+                    }
+                },
+                onError: function (data) {
+                    $('log-container').show();
+                    $('spinner').hide();
+                    console.log('error');
+                    console.log(data);
+                }
+            });
+    }
+
+    function addInjection() {
+        rowId = 'injection-' + new Date().getTime();
+        var injectionRow = new Element('tr', {id: rowId});
+        var deleteCol = new Element('td');
+        var deleteButton = new Element('button', {'data-delete': rowId});
+        deleteButton.insert('Delete');
+        deleteButton.observe('click', deleteInjection);
+        deleteCol.insert(deleteButton);
+        deleteCol.insert(new Element('input', {type: 'hidden', name: 'injections[]', value: rowId}))
+        var identifier = new Element('td');
+        identifier.insert($('execution_identifier').getValue());
+        identifier.insert(new Element('input', {
+            type: 'hidden',
+            name: 'identifier-' + rowId,
+            value: $('execution_identifier').getValue()
+        }));
+        var model = new Element('td');
+        model.insert($('execution_model').getValue());
+        model.insert(new Element('input', {
+            type: 'hidden',
+            name: 'model-' + rowId,
+            value: $('execution_model').getValue()
+        }))
+        var pk = new Element('td');
+        pk.insert($('execution_primary_key').getValue());
+        pk.insert(new Element('input', {
+            type: 'hidden',
+            name: 'primary-key-' + rowId,
+            value: $('execution_primary_key').getValue()
+        }))
+
+        injectionRow.insert(deleteCol);
+        injectionRow.insert(identifier);
+        injectionRow.insert(model);
+        injectionRow.insert(pk);
+
+        $('current_execution_injections').select('tbody')[0].insert(injectionRow);
+    }
+
+    function addForm() {
+        $('create-instruction').show();
+        $('save-instruction').hide();
+        showForm();
+    }
+
+    function showForm() {
+        $('magium-builder-form-container-clickblocker').show();
+        showSelectedItem();
+    }
+
+    function showSelectedItem() {
+        var containerId;
+        for (var i in containerIds) {
+            containerId = containerIds[i];
+            var item = $(containerId);
+            if (item && item.hide) {
+                item.hide();
+            }
+        }
+        containerId = $('type').getValue() + '_container';
+        var container = $(containerId);
+        if (container && container.show) {
+            $(containerId).show();
+        }
+        ensureParameterProperlySet();
+    }
+
+    function ensureParameterProperlySet() {
+        var componentSelector = $('type').getValue();
+        var selectedItem = $(componentSelector + '_instruction').getValue();
+
+        if (!builderRequirements[selectedItem]) {
+            $(componentSelector).select('tr:nth-child(2)').hide();
+        } else {
+            var show = builderRequirements[selectedItem];
+            switch (show) {
+                case 'none':
+                    $(componentSelector).select('tr:nth-child(2)')[0].hide();
+                    break;
+                case 'required':
+                    $(componentSelector).select('tr:nth-child(2)')[0].show();
+                    $(componentSelector).select('tr:nth-child(2) span.required')[0].show();
+                    break;
+                case 'optional':
+                    $(componentSelector).select('tr:nth-child(2)')[0].show();
+                    $(componentSelector).select('tr:nth-child(2) span.required')[0].hide();
+                    break;
+                default:
+                    $(componentSelector).select('tr:nth-child(2)')[0].hide();
+                    break;
+            }
+        }
+    }
+
+    function closeForm(e) {
+        if (e && e.keyCode && Event.KEY_ESC != e.keyCode) return;
+        $('magium-builder-form-container-clickblocker').hide();
+        $('magium-execution-form-container-clickblocker').hide();
+    }
+
+    function removeRow(e) {
+        if (confirm('Are you sure you want to delete this instruction?')) {
+            $(this.readAttribute('data-delete')).remove();
+        }
+    }
+
+    function saveForm() {
+        setInstruction(null, null, null, this.readAttribute('data-row'));
+    }
+
+    function editInstruction() {
+        $('save-instruction').setAttribute('data-row', this.readAttribute('data-row'));
+        $('create-instruction').hide();
+        $('save-instruction').show();
+        var componentSelector = this.readAttribute('data-type');
+        $('type').value = componentSelector;
+        var instruction = this.readAttribute('data-instruction');
+        $(componentSelector + '_instruction').value = instruction;
+        var param = this.readAttribute('data-param');
+
+        showForm();
+    }
+
+    function setInstruction(componentSelector, selectedItem, param, rowId) {
+        var insertRow = true;
+
+        if (!componentSelector || !componentSelector.substring) {
+            componentSelector = $('type').getValue();
+        }
+
+        if (!selectedItem) {
+            selectedItem = $(componentSelector + '_instruction').getValue();
+        }
+        if (!param) {
+            param = $(componentSelector + '_instruction_param').getValue();
+        }
+
+        console.log("componentSelector: " + componentSelector);
+        console.log("selectedItem: " + selectedItem);
+        console.log("param: " + param);
+        console.log("rowId: " + rowId);
+
+        var row;
+
+        if (rowId) {
+            row = $(rowId);
+            row.descendants().each(function (e) {
+                e.remove()
+            });
+            insertRow = false;
+        } else {
+
+            rowId = 'instruction-' + new Date().getTime();
+            row = new Element('tr', {id: rowId, 'class': 'instruction-container'});
+        }
+
+        console.log("rowId: " + rowId);
+
+        var labelData = new Element('td', {'class': 'label'});
+
+        var label = new Element('label', {style: 'position: absolute; margin-left: 100px;'});
+        label.insert(componentSelector[0].toUpperCase() + componentSelector.slice(1));
+
+        labelData.insert(label);
+
+        var editButton = new Element('button', {
+            type: 'button',
+            'data-type': componentSelector,
+            'data-instruction': selectedItem,
+            'data-param': param,
+            'data-row': rowId
+        });
+        editButton.observe('click', editInstruction);
+        editButton.insert('Edit');
+        labelData.insert(editButton);
+
+        var deleteButton = new Element('button', {type: 'button', 'class': 'back', 'data-delete': rowId});
+        deleteButton.observe('click', removeRow);
+        deleteButton.insert('Delete');
+        labelData.insert(deleteButton);
+
+        var labelRow = new Element('tr');
+        labelRow.insert(labelData);
+        row.insert(labelRow);
+
+        var valueRow = new Element('td', {'class': 'value'});
+        valueRow.insert({bottom: selectedItem});
+        if (param) {
+            valueRow.insert({bottom: ': ' + param});
+        }
+        row.insert({bottom: valueRow});
+
+        var formInstructions = new Element('input', {type: 'hidden', value: rowId, name: 'instructions[]'});
+        var formType = new Element('input', {type: 'hidden', value: componentSelector, name: rowId + '_type'});
+        var formClass = new Element('input', {type: 'hidden', value: selectedItem, name: rowId + '_class'});
+        var formParam = new Element('input', {type: 'hidden', value: param, name: rowId + '_param'});
+        row.insert(formInstructions);
+        row.insert(formType);
+        row.insert(formClass);
+        row.insert(formParam);
+
+        if (insertRow) {
+            $('form_instructions').select('tbody')[0].insert(row);
+        }
+
+        closeForm();
+    }
+
+    var containerIds = <?php echo Zend_Json::encode($this->getHiddenContainerIds()); ?>;
+
+    var builderRequirements = <?php echo Zend_Json::encode($this->typeParamRequirements()) ?>;
+
+    $('create-instruction').observe('click', setInstruction);
+    document.observe('keydown', closeForm);
+    $('cancel-instruction').observe('click', closeForm);
+    $('cancel-execution').observe('click', closeForm);
+    $('add-injection').observe('click', addInjection);
+    $('add-instruction-button').observe('click', addForm);
+    $('save-instruction').observe('click', saveForm);
+    $('execute-test').observe('click', doExecuteTest);
+
+    var currentInstructions = <?php echo Zend_Json::encode($this->getForm()->getInstructionsAsArray()); ?>;
+
+    if (currentInstructions) {
+        $(currentInstructions).each(function (i) {
+            setInstruction(i.type, i.class, i.param);
+        });
+    }
+
+</script>

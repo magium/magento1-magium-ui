@@ -1,0 +1,25 @@
+
+<?php
+/**
+ * @var $this Magium_Clairvoyant_Block_Adminhtml_Management_Container
+ */
+?>
+<?php echo $this->getFormInitScripts() ?>
+<div class="content-header">
+    <?php echo $this->getHeaderHtml() ?>
+    <p class="form-buttons"><?php echo $this->getButtonsHtml('header') ?></p>
+</div>
+<form id="edit_form" <?php echo $this->serialize(['action', 'enctype', 'method']); ?>>
+    <input type="hidden" name="form_key" value="<?php echo $this->getFormKey(); ?>" />
+<?php echo $this->getChildHtml('form'); ?>
+<?php echo $this->getChildHtml('magium_clairvoyant_instructions'); ?>
+</form>
+<?php if ($this->hasFooterButtons()): ?>
+    <div class="content-footer">
+        <p class="form-buttons"><?php echo $this->getButtonsHtml('footer') ?></p>
+    </div>
+<?php endif; ?>
+<script type="text/javascript">
+    editForm = new varienForm('edit_form', '<?php echo $this->getValidationUrl() ?>');
+</script>
+<?php echo $this->getFormScripts() ?>

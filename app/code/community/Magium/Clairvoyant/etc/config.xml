@@ -1,0 +1,359 @@
+<config>
+    <modules>
+        <Magium_Clairvoyant>
+            <version>1.0.0</version>
+        </Magium_Clairvoyant>
+    </modules>
+    <global>
+        <resources>
+            <magium_clairvoyant_setup>
+                <setup>
+                    <module>Magium_Clairvoyant</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </magium_clairvoyant_setup>
+        </resources>
+        <models>
+            <magium_clairvoyant>
+                <class>Magium_Clairvoyant_Model</class>
+                <resourceModel>magium_clairvoyant_resource</resourceModel>
+            </magium_clairvoyant>
+            <magium_clairvoyant_resource>
+                <class>Magium_Clairvoyant_Model_Resource</class>
+                <entities>
+                    <configuration>
+                        <table>magium_clairvoyant_configuration</table>
+                    </configuration>
+                    <introspected>
+                        <table>magium_clairvoyant_introspected</table>
+                    </introspected>
+                    <option>
+                        <table>magium_clairvoyant_option</table>
+                    </option>
+                    <test>
+                        <table>magium_clairvoyant_test</table>
+                    </test>
+                    <instruction>
+                        <table>magium_clairvoyant_instruction</table>
+                    </instruction>
+                    <event>
+                        <table>magium_clairvoyant_event</table>
+                    </event>
+                    <queue>
+                        <table>magium_clairvoyant_queue</table>
+                    </queue>
+                </entities>
+            </magium_clairvoyant_resource>
+        </models>
+        <helpers>
+            <magium_clairvoyant>
+                <class>Magium_Clairvoyant_Helper</class>
+            </magium_clairvoyant>
+        </helpers>
+        <blocks>
+            <magium_clairvoyant>
+                <class>Magium_Clairvoyant_Block</class>
+            </magium_clairvoyant>
+        </blocks>
+        <events>
+            <catalog_product_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_product_save_commit_after>
+            <catalog_product_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_product_delete_commit_after>
+            <catalog_category_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_category_save_commit_after>
+            <catalog_category_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </catalog_category_delete_commit_after>
+            <admin_system_config_section_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </admin_system_config_section_commit_after>
+            <cms_save_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </cms_save_commit_after>
+            <cms_delete_commit_after>
+                <observers>
+                    <magium_clairvoyant_event>
+                        <class>magium_clairvoyant/observer</class>
+                        <method>observe</method>
+                    </magium_clairvoyant_event>
+                </observers>
+            </cms_delete_commit_after>
+        </events>
+    </global>
+    <magium>
+        <base_types>
+            <navigator>
+                <label>Navigator</label>
+                <type>Magium\Navigators\NavigatorInterface</type>
+            </navigator>
+            <assertion>
+                <label>Assertion</label>
+                <type>Magium\Assertions\AssertInterface</type>
+            </assertion>
+            <action>
+                <label>Action</label>
+                <type>Magium\Actions\ActionInterface</type>
+            </action>
+        </base_types>
+        <configuration>
+            <sections>
+                <store_defaults>
+                    <label>Store Defaults</label>
+                    <type>Magium\Themes\ThemeInterface</type>
+                    <groups>
+                        <general_configuration>
+                            <name>General Site Configuration</name>
+                            <elements>
+                                <baseUrl>
+                                    <label>Base Site URL</label>
+                                </baseUrl>
+                                <homeXpath>
+                                    <label>Home Link XPath</label>
+                                </homeXpath>
+                            </elements>
+                        </general_configuration>
+                        <defaults>
+                            <name>Defaults</name>
+                            <elements>
+                                <defaultSimpleProductName>
+                                    <label>Default Simple Product Name</label>
+                                </defaultSimpleProductName>
+                                <navigationPathToSimpleProductCategory>
+                                    <label>Category For Default Simple Product</label>
+                                </navigationPathToSimpleProductCategory>
+                                <defaultConfigurableProductName>
+                                    <label>Default Configurable Product Name</label>
+                                </defaultConfigurableProductName>
+                                <defaultConfigurableProductName>
+                                    <label>Default Configurable Product Name</label>
+                                </defaultConfigurableProductName>
+                            </elements>
+                        </defaults>
+                        <xpaths>
+                            <name>Xpaths</name>
+                            <elements>
+                                <addToCartXpath>
+                                    <label>Product Page Add To Cart Xpath</label>
+                                </addToCartXpath>
+                                <categoryAddToCartButtonXPathSelector>
+                                    <label>Category Page Add To Cart Xpath</label>
+                                </categoryAddToCartButtonXPathSelector>
+                                <addToCartSuccessXpath>
+                                    <label>Successful Add-To-Cart Xpath</label>
+                                </addToCartSuccessXpath>
+                            </elements>
+                        </xpaths>
+                    </groups>
+                </store_defaults>
+                <admin_identity>
+                    <label>Admin Identity</label>
+                    <type>Magium\Magento\Identities\Admin</type>
+                    <groups>
+                        <admin_identity>
+                            <name>Admin Identity</name>
+                            <elements>
+                                <account>
+                                    <label>Username</label>
+                                </account>
+                                <password>
+                                    <label>Password</label>
+                                </password>
+                            </elements>
+                        </admin_identity>
+                    </groups>
+                </admin_identity>
+                <admin_configuration>
+                    <label>Admin Configuration</label>
+                    <type>Magium\Magento\Themes\Admin\ThemeConfiguration</type>
+                    <groups>
+                        <admin_configuration>
+                            <name>Admin Configuration</name>
+                            <elements>
+                                <baseUrl>
+                                    <label>URL For Admin UI</label>
+                                </baseUrl>
+                            </elements>
+                        </admin_configuration>
+                    </groups>
+                </admin_configuration>
+                <customer_identity>
+                    <label>Customer Identity</label>
+                    <type>Magium\Magento\Identities\Customer</type>
+                    <groups>
+                        <authentiation>
+                            <name>Authentication</name>
+                            <elements>
+                                <emailAddress>
+                                    <label>Email Address</label>
+                                </emailAddress>
+                                <password>
+                                    <label>Password</label>
+                                </password>
+                            </elements>
+                        </authentiation>
+                        <billing_address>
+                            <name>Billing Address</name>
+                            <elements>
+                                <billingFirstName>
+                                    <label>First Name</label>
+                                </billingFirstName>
+                                <billingLastName>
+                                    <label>Last Name</label>
+                                </billingLastName>
+                                <billingCompany>
+                                    <label>Company</label>
+                                </billingCompany>
+                                <billingAddress>
+                                    <label>Address</label>
+                                </billingAddress>
+                                <billingAddress2>
+                                    <label>Address2</label>
+                                </billingAddress2>
+                                <billingCity>
+                                    <label>City</label>
+                                </billingCity>
+                                <billingRegionId>
+                                    <label>Region ID</label>
+                                </billingRegionId>
+                                <billingPostCode>
+                                    <label>Post Code</label>
+                                </billingPostCode>
+                                <billingCountryId>
+                                    <label>Country ID</label>
+                                </billingCountryId>
+                                <billingTelephone>
+                                    <label>Telephone</label>
+                                </billingTelephone>
+                                <billingFax>
+                                    <label>Fax</label>
+                                </billingFax>
+                            </elements>
+                        </billing_address>
+                        <shipping_address>
+                            <name>Shipping Address</name>
+                            <elements>
+                                <shippingFirstName>
+                                    <label>First Name</label>
+                                </shippingFirstName>
+                                <shippingLastName>
+                                    <label>Last Name</label>
+                                </shippingLastName>
+                                <shippingCompany>
+                                    <label>Company</label>
+                                </shippingCompany>
+                                <shippingAddress>
+                                    <label>Address</label>
+                                </shippingAddress>
+                                <shippingAddress2>
+                                    <label>Address 2</label>
+                                </shippingAddress2>
+                                <shippingCity>
+                                    <label>City</label>
+                                </shippingCity>
+                                <shippingRegionId>
+                                    <label>Region ID</label>
+                                </shippingRegionId>
+                                <shippingPostCode>
+                                    <label>Post Code</label>
+                                </shippingPostCode>
+                                <shippingCountryId>
+                                    <label>Country ID</label>
+                                </shippingCountryId>
+                                <shippingTelephone>
+                                    <label>Telephone</label>
+                                </shippingTelephone>
+                                <shippingFax>
+                                    <label>Fax</label>
+                                </shippingFax>
+                            </elements>
+                        </shipping_address>
+                    </groups>
+                </customer_identity>
+            </sections>
+        </configuration>
+        <execution>
+            <catalog_product_save_commit_after>
+                <label>Product Save</label>
+            </catalog_product_save_commit_after>
+            <catalog_product_delete_commit_after>
+                <label>Product Delete</label>
+            </catalog_product_delete_commit_after>
+            <catalog_category_save_commit_after>
+                <label>Category Save</label>
+            </catalog_category_save_commit_after>
+            <catalog_category_delete_commit_after>
+                <label>Category Delete</label>
+            </catalog_category_delete_commit_after>
+            <admin_system_config_section_commit_after>
+                <label>Configuration Save</label>
+            </admin_system_config_section_commit_after>
+            <cms_save_commit_after>
+                <label>CMS Page Save</label>
+            </cms_save_commit_after>
+            <cms_delete_commit_after>
+                <label>CMS Page Delete</label>
+            </cms_delete_commit_after>
+        </execution>
+    </magium>
+    <adminhtml>
+        <layout>
+            <updates>
+                <magium_clairvoyant>
+                    <file>magium/clairvoyant.xml</file>
+                </magium_clairvoyant>
+            </updates>
+        </layout>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <magium_clairvoyant before="Mage_Adminhtml">Magium_Clairvoyant</magium_clairvoyant>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <default>
+        <magium>
+            <general>
+                <selenium_url>http://localhost:4444/wd/hub/</selenium_url>
+            </general>
+        </magium>
+    </default>
+</config>

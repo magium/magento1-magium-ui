@@ -1,0 +1,8 @@
+<config>
+  <modules>
+    <Magium_Clairvoyant>
+      <active>true</active>
+      <codePool>community</codePool>
+    </Magium_Clairvoyant>
+  </modules>
+</config>

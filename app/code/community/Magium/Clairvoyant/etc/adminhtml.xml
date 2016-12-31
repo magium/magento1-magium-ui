@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <system>
+            <children>
+                <magium translate="title" module="magium_clairvoyant">
+                    <title>Magium</title>
+                    <sort_order>0</sort_order>
+                    <children>
+
+                        <test_configuration translate="title" module="magium_clairvoyant">
+                            <title>Test Configuration</title>
+                            <action>adminhtml/magiumui_configuration</action>
+                            <sort_order>10</sort_order>
+                        </test_configuration>
+                        <test_management translate="title" module="magium_clairvoyant">
+                            <title>Test Management</title>
+                            <action>adminhtml/magiumui_management</action>
+                            <sort_order>20</sort_order>
+                        </test_management>
+                        <test_execution translate="title" module="magium_clairvoyant">
+                            <title>Test Execution</title>
+                            <action>adminhtml/magiumui_execution</action>
+                            <sort_order>30</sort_order>
+                        </test_execution>
+                        <test_queue translate="title" module="magium_clairvoyant">
+                            <title>Test Queue</title>
+                            <action>adminhtml/magiumui_queue</action>
+                            <sort_order>40</sort_order>
+                        </test_queue>
+                    </children>
+                </magium>
+            </children>
+        </system>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <magium translate="title" module="magium_clairvoyant">
+                                        <title>Magium</title>
+                                    </magium>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
