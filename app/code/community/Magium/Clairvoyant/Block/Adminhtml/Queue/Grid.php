@@ -43,11 +43,11 @@ class Magium_Clairvoyant_Block_Adminhtml_Queue_Grid extends Mage_Adminhtml_Block
             'index' => 'status',
             'type'  => 'options',
             'options'   => [
-                Magium_Clairvoyant_Model_Observer::TEST_STATUS_PASSED    => 'Passed',
-                Magium_Clairvoyant_Model_Observer::TEST_STATUS_FAILED    => 'Failed',
-                Magium_Clairvoyant_Model_Observer::TEST_STATUS_SKIPPED    => 'Skipped',
-                Magium_Clairvoyant_Model_Observer::TEST_STATUS_IN_PROCESS    => 'In Process',
-                Magium_Clairvoyant_Model_Observer::TEST_STATUS_QUEUED    => 'Queued',
+                Magium_Clairvoyant_Model_Queue::TEST_STATUS_PASSED    => 'Passed',
+                Magium_Clairvoyant_Model_Queue::TEST_STATUS_FAILED    => 'Failed',
+                Magium_Clairvoyant_Model_Queue::TEST_STATUS_SKIPPED    => 'Skipped',
+                Magium_Clairvoyant_Model_Queue::TEST_STATUS_IN_PROCESS    => 'In Process',
+                Magium_Clairvoyant_Model_Queue::TEST_STATUS_QUEUED    => 'Queued',
             ],
             'renderer'  => 'magium_clairvoyant/adminhtml_queue_renderer_status'
         ]);
