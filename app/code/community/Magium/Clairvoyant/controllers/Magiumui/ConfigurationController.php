@@ -6,6 +6,8 @@ class Magium_Clairvoyant_Magiumui_ConfigurationController extends Mage_Adminhtml
 
     public function indexAction()
     {
+        $cron = Mage::getModel('magium_clairvoyant/cron');
+        $cron->retrieveNewsFeed();
 
         $collection = Mage::getModel('magium_clairvoyant/introspected')->getCollection();
         $count = $collection->getSize();

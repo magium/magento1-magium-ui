@@ -115,6 +115,7 @@
         </events>
     </global>
     <magium>
+        <feed_location>http://magiumlib.com/magento1-clairvoyant.xml</feed_location>
         <base_types>
             <navigator>
                 <label>Navigator</label>
@@ -353,6 +354,7 @@
         <magium>
             <general>
                 <selenium_url>http://localhost:4444/wd/hub/</selenium_url>
+                <get_news>1</get_news>
             </general>
         </magium>
     </default>
@@ -366,6 +368,14 @@
                     <model>magium_clairvoyant/cron::executeQueuedTests</model>
                 </run>
             </magium_test_execution>
+            <magium_news>
+                <schedule>
+                    <cron_expr>0 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>magium_clairvoyant/cron::retrieveNewsFeed</model>
+                </run>
+            </magium_news>
         </jobs>
     </crontab>
 </config>

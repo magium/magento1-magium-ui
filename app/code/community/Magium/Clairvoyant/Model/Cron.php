@@ -3,6 +3,32 @@
 class Magium_Clairvoyant_Model_Cron
 {
 
+    const CONFIG_RETRIEVE_NEWS = 'magium/general/get_news';
+    const CONFIG_FEED_LOCATION = 'magium/feed_location';
+
+    public function retrieveNewsFeed()
+    {
+        if (Mage::getStoreConfigFlag(self::CONFIG_RETRIEVE_NEWS)) {
+            $feedLocation = (string)Mage::app()->getConfig()->getNode(self::CONFIG_FEED_LOCATION);
+            $reader = new Zend_Feed_Atom($feedLocation);
+            $inbox = Mage::getModel('adminnotification/inbox');
+
+            if ($inbox instanceof Mage_AdminNotification_Model_Inbox) {
+                foreach ($reader as $entry) {
+                    if ($entry instanceof Zend_Feed_Entry_Abstract) {
+                        $title = (string)$entry->title;
+                        $summary = (string)$entry->summary;
+                        $url = (string)$entry->link['href'];
+                        $inbox->load($url, 'url');
+                        if (!$inbox->getId()) {
+                            $inbox->addNotice($title, $summary, $url);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function executeQueuedTests()
     {
         $queuedCollection = Mage::getModel('magium_clairvoyant/queue')->getCollection();
