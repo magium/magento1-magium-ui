@@ -353,6 +353,7 @@
     <default>
         <magium>
             <general>
+                <report_when>failure</report_when>
                 <selenium_url>http://localhost:4444/wd/hub/</selenium_url>
                 <get_news>1</get_news>
             </general>
