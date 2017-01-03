@@ -57,5 +57,14 @@
             </block>
         </reference>
     </adminhtml_magiumui_execution_index>
-
+    <adminhtml_magiumui_queue_index>
+        <reference name="content">
+            <block name="magium_clairvoyant_queue_container"
+                   type="magium_clairvoyant/adminhtml_queue_grid">
+            </block>
+            <block name="magium_clairvoyant_queue_script"
+                   type="core/template" template="magium/queue/grid.phtml">
+            </block>
+        </reference>
+    </adminhtml_magiumui_queue_index>
 </layout>
