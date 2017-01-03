@@ -10,7 +10,12 @@ class Magium_Clairvoyant_Model_Cron
     {
         if (Mage::getStoreConfigFlag(self::CONFIG_RETRIEVE_NEWS)) {
             $feedLocation = (string)Mage::app()->getConfig()->getNode(self::CONFIG_FEED_LOCATION);
-            $reader = new Zend_Feed_Atom($feedLocation);
+            try {
+                $reader = new Zend_Feed_Atom($feedLocation);
+            } catch (Exception $e) {
+                Mage::log($e->getMessage());
+                return;
+            }
             $inbox = Mage::getModel('adminnotification/inbox');
 
             if ($inbox instanceof Mage_AdminNotification_Model_Inbox) {
