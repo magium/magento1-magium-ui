@@ -29,6 +29,7 @@ class Magium_Clairvoyant_Helper_Data extends Mage_Core_Helper_Abstract
             Magium\TestCaseConfiguration::class
         );
         if ($testCase instanceof Magium_Clairvoyant_Model_Instruction_Test) {
+            $testCase->setName('testExecute');
             if ($initializer instanceof Magium_Clairvoyant_Model_Instruction_Initializer) {
                 $initializer->bypassWebDriver($bypassWebDriver);
                 $initializer->initialize($testCase);

@@ -4,6 +4,7 @@ class Magium_Clairvoyant_Model_Observer
 {
 
     const CONFIG_QUEUE_EXECUTION = 'magium/general/use_queue';
+    const CONFIG_QUEUE_THROW_EXCEPTION = 'magium/general/throw_exception';
 
     const TEST_STATUS_PASSED = 'passed';
     const TEST_STATUS_QUEUED = 'queued';
@@ -77,8 +78,6 @@ class Magium_Clairvoyant_Model_Observer
             $testInstance = $helper->getInstructionTestCase(
                 Mage::getStoreConfigFlag(self::CONFIG_QUEUE_EXECUTION)
             );
-            $testInstance->setName('testExecute');
-
 
             $di = $testInstance->getDi();
             foreach ($event->getData() as $key => $data) {
@@ -181,7 +180,11 @@ class Magium_Clairvoyant_Model_Observer
                         )
                     );
                 } else {
-                    $queue->setStatus(self::TEST_STATUS_PASSED);
+                    $queue->setStatus(self::TEST_STATUS_FAILED);
+                    if (Mage::getStoreConfigFlag(self::CONFIG_QUEUE_THROW_EXCEPTION)) {
+                        $queue->save();
+                        throw new Magium_Clairvoyant_Model_FailedTestException('Magium test has failed');
+                    }
                     Mage::getSingleton('adminhtml/session')->addError(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test %s failed',

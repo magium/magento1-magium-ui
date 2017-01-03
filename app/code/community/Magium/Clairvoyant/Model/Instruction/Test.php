@@ -32,8 +32,10 @@ class Magium_Clairvoyant_Model_Instruction_Test extends \Magium\Magento\Abstract
         $executor = $this->get(\Magium\TestCase\Executor::class);
         if ($executor instanceof \Magium\TestCase\Executor) {
             foreach ($this->_preConditions as $condition) {
+                $this->getLogger()->info('Evaluating precondition', ['condition' => $condition]);
                 $result = $executor->evaluate($condition);
                 if (!$result) {
+                    $this->getLogger()->info('Condition evaluated to false', ['condition' => $condition]);
                     self::markTestSkipped('Evaluation returned false for ' . $condition);
                 }
             }
@@ -42,6 +44,7 @@ class Magium_Clairvoyant_Model_Instruction_Test extends \Magium\Magento\Abstract
         if ($this->_baseUrl) {
             $this->getTheme()->set('baseUrl', $this->_baseUrl);
         }
+        $this->getLogger()->info('Opening URL', ['url' => $this->getTheme()->getBaseUrl()]);
         $this->commandOpen($this->getTheme()->getBaseUrl());
         if (!$this->_instructions instanceof \Magium\TestCase\Configurable\InstructionsCollection) {
             throw new \Magium\TestCase\Configurable\InvalidInstructionException('Missing the instruction collection');

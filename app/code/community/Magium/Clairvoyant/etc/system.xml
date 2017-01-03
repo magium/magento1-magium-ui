@@ -64,7 +64,9 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>50</sort_order>
                             <comment>Throws an exception if there are failed tests.  This can be used to rollback a
-                            transaction if the test is executed during a transaction.</comment>
+                            transaction if the test is executed during a transaction.  Out of the box events occur
+                            outside of the commit so you will need to configure different events in the config.xml file
+                            </comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

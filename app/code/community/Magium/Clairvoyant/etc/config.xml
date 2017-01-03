@@ -356,4 +356,16 @@
             </general>
         </magium>
     </default>
+    <crontab>
+        <jobs>
+            <magium_test_execution>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>magium_clairvoyant/cron::executeQueuedTests</model>
+                </run>
+            </magium_test_execution>
+        </jobs>
+    </crontab>
 </config>
