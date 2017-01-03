@@ -274,6 +274,10 @@ if (!$installer->getConnection()->isTableExists($tableName)) {
             array(
                 'nullable' => true,
             ), 'Value')
+        ->addColumn('test_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
+            array(
+                'nullable' => false,
+            ), 'Test ID')
         ->addColumn('actions_serialized', Varien_Db_Ddl_Table::TYPE_TEXT, null,
             array(
                 'nullable' => false,
@@ -298,6 +302,14 @@ if (!$installer->getConnection()->isTableExists($tableName)) {
             array(
                 'nullable' => true,
             ), 'Completed At')
+        ->addForeignKey(
+            $installer->getFkName('magium_clairvoyant/queue', 'test_id', 'magium_clairvoyant/test', 'entity_id'),
+            'test_id',
+            $installer->getTable('magium_clairvoyant/test'),
+            'entity_id',
+            Varien_Db_Ddl_Table::ACTION_NO_ACTION,
+            Varien_Db_Ddl_Table::ACTION_NO_ACTION
+        )
         ->setComment('Magium Test Runs');
     $installer->getConnection()->createTable($table);
 }

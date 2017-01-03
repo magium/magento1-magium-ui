@@ -6,12 +6,6 @@ class Magium_Clairvoyant_Model_Observer
     const CONFIG_QUEUE_EXECUTION = 'magium/general/use_queue';
     const CONFIG_QUEUE_THROW_EXCEPTION = 'magium/general/throw_exception';
 
-    const TEST_STATUS_PASSED = 'passed';
-    const TEST_STATUS_QUEUED = 'queued';
-    const TEST_STATUS_FAILED = 'failed';
-    const TEST_STATUS_IN_PROCESS = 'in_process';
-    const TEST_STATUS_SKIPPED = 'skipped';
-
     protected $_introspected = [];
 
     public function observe(Varien_Event_Observer $observer)
@@ -126,9 +120,10 @@ class Magium_Clairvoyant_Model_Observer
                     $queue->setName($test->getName());
                     $queue->setPreConditions(serialize($injectConditions));
                     $queue->setCommandOpen($url);
+                    $queue->setTestId($test->getId());
                     $queue->setActionsSerialized(serialize($interpolatedInstructions));
                     $queue->setCreatedAt(Varien_Date::now());
-                    $queue->setStatus(self::TEST_STATUS_QUEUED);
+                    $queue->setStatus(Magium_Clairvoyant_Model_Queue::TEST_STATUS_QUEUED);
                 } else {
                     return;
                 }
@@ -164,7 +159,7 @@ class Magium_Clairvoyant_Model_Observer
                 $skipped = $result->skipped();
 
                 if (count($passed) == 1) {
-                    $queue->setStatus(self::TEST_STATUS_PASSED);
+                    $queue->setStatus(Magium_Clairvoyant_Model_Queue::TEST_STATUS_PASSED);
                     Mage::getSingleton('adminhtml/session')->addSuccess(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test "%s" passed',
@@ -172,7 +167,7 @@ class Magium_Clairvoyant_Model_Observer
                         )
                     );
                 } else if (count($skipped) == 1) {
-                    $queue->setStatus(self::TEST_STATUS_SKIPPED);
+                    $queue->setStatus(Magium_Clairvoyant_Model_Queue::TEST_STATUS_SKIPPED);
                     Mage::getSingleton('adminhtml/session')->addSuccess(
                         Mage::helper('magium_clairvoyant')->__(
                             'Magium test "%s" skipped',
@@ -180,7 +175,7 @@ class Magium_Clairvoyant_Model_Observer
                         )
                     );
                 } else {
-                    $queue->setStatus(self::TEST_STATUS_FAILED);
+                    $queue->setStatus(Magium_Clairvoyant_Model_Queue::TEST_STATUS_FAILED);
                     if (Mage::getStoreConfigFlag(self::CONFIG_QUEUE_THROW_EXCEPTION)) {
                         $queue->save();
                         throw new Magium_Clairvoyant_Model_FailedTestException('Magium test has failed');
