@@ -1,0 +1,9 @@
+# app/code
+app/code/community/Magium/Clairvoyant            app/code/community/Magium/Clairvoyant
+# app/etc
+app/etc/modules/Magium_Clairvoyant.xml            app/etc/modules/Magium_Clairvoyant.xml
+# app/design
+app/design/adminhtml/default/default/layout/magium/clairvoyant.xml            app/design/adminhtml/default/default/layout/magium/clairvoyant.xml
+app/design/adminhtml/default/default/template/magium/management.phtml            app/design/adminhtml/default/default/template/magium/management.phtml
+app/design/adminhtml/default/default/template/magium/queue/grid.phtml            app/design/adminhtml/default/default/template/magium/queue/grid.phtml
+app/design/adminhtml/default/default/template/magium/widget/form/container.phtml            app/design/adminhtml/default/default/template/magium/widget/form/container.phtml
