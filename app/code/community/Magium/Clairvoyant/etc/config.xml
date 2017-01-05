@@ -355,6 +355,7 @@
             <general>
                 <report_when>failure</report_when>
                 <selenium_url>http://localhost:4444/wd/hub/</selenium_url>
+                <use_queue>1</use_queue>
                 <get_news>1</get_news>
             </general>
         </magium>
