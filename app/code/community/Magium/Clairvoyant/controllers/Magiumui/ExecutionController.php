@@ -35,7 +35,7 @@ class Magium_Clairvoyant_Magiumui_ExecutionController extends Mage_Adminhtml_Con
                 $model->save();
                 Mage::getSingleton('adminhtml/session')->addSuccess(
                     Mage::helper('magium_clairvoyant')->__(
-                        'Test has been attiached to event: %s',
+                        'Test has been attached to event: %s',
                         $this->getRequest()->getParam('event')
                     )
                 );
