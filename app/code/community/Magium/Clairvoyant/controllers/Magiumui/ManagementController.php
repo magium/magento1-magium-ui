@@ -47,11 +47,18 @@ class Magium_Clairvoyant_Magiumui_ManagementController extends Mage_Adminhtml_Co
 
             foreach ($this->getRequest()->getPost('injections', []) as $injection) {
                 $model = $this->getRequest()->getPost('model-' . $injection);
+                $identifier = $this->getRequest()->getPost('identifier-' . $injection);
                 $pk = $this->getRequest()->getPost('primary-key-' . $injection);
                 $instance = Mage::getModel($model)->load($pk);
-                $test->getDi()->instanceManager()->addSharedInstance($instance, 'product');
-                $test->getDi()->instanceManager()->addAlias('product', get_class($instance));
+                $test->getDi()->instanceManager()->addSharedInstance($instance, $identifier);
+                $test->getDi()->instanceManager()->addAlias($identifier, get_class($instance));
             }
+
+            $test->getDi()->instanceManager()->addSharedInstance(Mage::app(), Mage_Core_Model_App::class);
+            $test->getDi()->instanceManager()->addAlias('theme', \Magium\Magento\Themes\AbstractThemeConfiguration::class);
+            $test->getDi()->instanceManager()->addAlias('webdriver', \Magium\WebDriver\WebDriver::class);
+            $test->getDi()->instanceManager()->addAlias('app', Mage_Core_Model_App::class);
+
             $interpolator = $test->getDi()->get(\Magium\TestCase\Configurable\Interpolator::class);
             if ($interpolator instanceof \Magium\TestCase\Configurable\Interpolator) {
                 $url = $this->getRequest()->getPost('command_open');
