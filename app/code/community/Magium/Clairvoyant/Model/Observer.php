@@ -80,6 +80,10 @@ class Magium_Clairvoyant_Model_Observer
                     $di->instanceManager()->addAlias($key, get_class($data));
                 }
             }
+            $di->instanceManager()->addSharedInstance(Mage::app(), Mage_Core_Model_App::class);
+            $di->instanceManager()->addAlias('theme', \Magium\Magento\Themes\AbstractThemeConfiguration::class);
+            $di->instanceManager()->addAlias('webdriver', \Magium\WebDriver\WebDriver::class);
+            $di->instanceManager()->addAlias('app', Mage_Core_Model_App::class);
 
             $instructions = $test->getInstructions();
             $instructionCollection = $testInstance->get(\Magium\TestCase\Configurable\InstructionsCollection::class);
