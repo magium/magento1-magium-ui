@@ -2,7 +2,7 @@
   "name": "magium/magento1-clairvoyant-ui",
   "description": "A Magento 1 based UI to build Magium Selenium tests in the Admin UI",
   "minimum-stability": "dev",
-  "license": "ASL-2.0",
+  "license": "Apache-2.0",
   "type": "magento-module",
   "authors": [
     {
